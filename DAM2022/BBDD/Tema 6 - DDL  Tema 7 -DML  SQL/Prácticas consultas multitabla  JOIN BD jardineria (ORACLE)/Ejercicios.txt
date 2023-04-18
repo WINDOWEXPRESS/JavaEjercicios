@@ -1,0 +1,17 @@
+1.- Crear el TABLESPACE "jardineria" en ORACLE con el usuario SYS y con el script facilitado (ej_tablespaces_jardineria.sql), después desconectar de SYS y crear nueva conexión en SQLDEVELOPER con usuario: jardineria - password: jardineria , para finalizar conectar con usuario jardinería y ejecutar el script para crear las tablas e insertar los datos de la base de datos (jardineria_oracle.sql).
+
+2.- Crea una consulta para obtener un informe con el listado de pedidos gestionados por cada empleado (Nombre del Empleado, Nombre del Cliente, Código Cliente).
+
+3.- Crea una consulta para obtener un informe con el número de pedidos que ha gestionado cada empleado.
+
+4.- Crea una consulta para obtener el Código de empleado, Nombre de empleado, Código de la oficina y ciudad, ordenada por el Código de Empleado.
+
+5.- Crea una consulta que genere un informe de empleados donde junto a su nombre y apellidos aparezca el nombre y apellidos de su jefe.
+
+6.- Crea una consulta que genere un informe que muestre las oficinas, la ciudad, el código de empleado y el nombre del empleados de las oficinas de la región "EMEA".
+
+7.- Igual que el anterior, pero mostrando las oficinas que no tienen empleados.
+
+8.- Listar los datos de cada uno de los empleados, la ciudad y región en donde trabaja.
+
+9.- Listar los pedidos mostrando su número, estado, nombre del cliente, y el límite de crédito del cliente correspondiente (todos los pedidos tienen cliente y representante).

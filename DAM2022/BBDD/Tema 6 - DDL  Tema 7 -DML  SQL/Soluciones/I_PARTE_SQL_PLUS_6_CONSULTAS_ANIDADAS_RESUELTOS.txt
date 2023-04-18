@@ -1,0 +1,330 @@
+1.- Nombre del empleado que más cobra en la empresa, sin contar la comisión.
+
+SELECT first_name
+FROM employee
+WHERE salary = ( SELECT MAX(salary)
+FROM employee );
+
+SELECT FIRST_NAME
+FROM EMPLOYEE
+WHERE SALARY = (SELECT MAX(salary)
+FROM EMPLOYEE);
+
+
+2.- Nombre del empleado mas antiguo de la empresa.
+
+SELECT first_name
+FROM employee
+WHERE hire_date = (SELECT MIN(hire_date)
+FROM employee);
+
+SELECT FIRST_NAME
+FROM EMPLOYEE
+WHERE HIRE_DATE = (SELECT MIN(HIRE_DATE)
+FROM EMPLOYEE);
+
+
+3.- Muestra el nombre de los empleados cuyo salario se encuentra por debajo de la
+media salarial en la empresa.
+
+SELECT first_name
+FROM employee
+WHERE salary < ( SELECT AVG(salary)
+FROM employee);
+
+SELECT FIRST_NAME, SALARY
+FROM EMPLOYEE
+WHERE SALARY < (SELECT AVG(SALARY)
+FROM EMPLOYEE);
+
+
+4.- Nombres de productos que nunca han sido vendidos.
+
+SELECT description
+FROM product
+WHERE product_id != ALL (SELECT product_id
+FROM item);
+
+SELECT PRODUCT_ID, DESCRIPTION
+FROM PRODUCT
+WHERE PRODUCT_ID != ALL (SELECT PRODUCT_ID
+FROM ITEM);
+
+
+5.- Nombre de empleados que trabajan en el depto RESEARCH.
+
+SELECT first_name
+FROM employee
+WHERE department_id IN ( SELECT department_id
+FROM department
+WHERE name = 'RESEARCH');
+
+SELECT FIRST_NAME
+FROM EMPLOYEE
+WHERE DEPARTMENT_ID IN (SELECT DEPARTMENT_ID
+FROM DEPARTMENT
+WHERE NAME='RESEARCH');
+
+
+6.- Nombre de los empleados cuyo responsable directo es Doyle (last_name).
+
+SELECT first_name
+FROM employee
+WHERE manager_id IN (SELECT employee_id
+FROM employee
+WHERE last_name = 'DOYLE');
+
+SELECT FIRST_NAME
+FROM EMPLOYEE
+WHERE MANAGER_ID = (SELECT EMPLOYEE_ID
+FROM EMPLOYEE
+WHERE LAST_NAME='DOYLE');
+
+
+7.- Calcula cuánto dINero (salario + comisión) total cobran al mes el conjunto de los
+empleados de los departamentos de operaciones (OPERATIONS).
+
+SELECT sum(salary + nvl(commission,0))
+FROM employee
+WHERE department_id IN ( SELECT department_id
+FROM department
+WHERE name = 'OPERATIONS');
+
+SELECT SUM(SALARY + nvl(COMMISSION,0))
+FROM EMPLOYEE
+WHERE DEPARTMENT_ID IN (SELECT DEPARTMENT_ID
+FROM DEPARTMENT
+WHERE NAME='OPERATIONS');
+
+
+8.- Buscar el limite de credito mínimo que corresponde a los clientes que representa
+el vendedor cuyo apellido es TURNER
+
+SELECT MIN(credit_limit)
+FROM customer
+WHERE salesperson_id = ( SELECT employee_id
+FROM employee
+WHERE last_name='TURNER');
+
+SELECT MIN(CREDIT_LIMIT)
+FROM CUSTOMER
+WHERE SALESPERSON_ID = ( SELECT EMPLOYEE_ID
+FROM EMPLOYEE
+WHERE LAST_NAME='TURNER');
+
+
+9.- Nombre de los empleados cuya funcion es vendedor (salesperson)
+
+SELECT first_name, last_name, job_id
+FROM employee
+WHERE job_id = (SELECT job_id
+FROM job
+WHERE function = 'SALESPERSON');
+
+
+10.- Seleccionar el nombre del producto que protagonicen líneas en las que se haya
+solicitado mas de 10 unidades de ellos.
+
+SELECT distinct(description)
+FROM product
+WHERE product_id IN (SELECT product_id
+FROM item
+WHERE quantity > 10);
+
+
+11.- Mostrar los nombres de empleados del departamento 20 que cobran más que
+alguno de los empleados del departamento 13.
+
+SELECT first_name
+FROM employee
+WHERE department_id = 20 AND salary > ANY (SELECT salary
+FROM employee
+WHERE department_id = 13);
+
+
+12.- Mostrar si algún empleado del 20 cobra más que todos los del 13.
+
+SELECT first_name
+FROM employee
+WHERE department_id = 20 AND salary > ALL ( SELECT salary
+FROM employee
+WHERE department_id = 13);
+
+
+13.- Muestra el nombre de los empleados que trabajan en el departamento 20 y tienen
+un salario superior a la media salarial de su propio departamento.
+
+SELECT first_name
+FROM employee
+WHERE department_id = 20 AND salary > (SELECT AVG(salary)
+FROM employee
+WHERE department_id = 20);
+
+
+14.- Nombre y código de los departamentos con más de 4 empleados.
+
+SELECT name, department_id
+FROM department
+WHERE department_id IN (SELECT department_id
+FROM employee
+GROUP BY department_id
+HAVING COUNT(*) > 4);
+
+
+15.- Nombre, apellido, ciudad y estado de los clientes cuyos pedidos medios superan
+los 500$
+
+SELECT name, address, city, state
+FROM customer
+WHERE customer_id IN (SELECT customer_id
+FROM sales_order
+GROUP BY customer_id
+HAVING AVG(total)>500);
+
+
+16.- Nombre, apellido, función y departamento de los empleados que tienen el mínimo
+salario por cada función.
+
+SELECT last_name, first_name, salary, job_id, department_id
+FROM employee
+WHERE (salary,job_id) IN (SELECT MIN(salary), job_id
+FROM employee
+GROUP BY job_id);
+
+
+17.- Nombre, apellido y salario de los empleados que tienen el máximo salario por
+departamento.
+
+SELECT last_name, first_name, salary, department_id
+FROM employee
+WHERE(salary, department_id) IN (SELECT MAX(salary), department_id
+FROM employee
+GROUP BY department_id);
+
+
+18.- Nombre de los empleados que trabajen en el mismo depto que Daniel y que
+cobren lo mismo que el.
+
+SELECT first_name
+FROM employee
+WHERE (salary, department_id) = (SELECT salary, department_id
+FROM employee
+WHERE first_name = 'DANIEL');
+
+------ O tambien ------
+
+SELECT first_name
+FROM employee
+WHERE (salary,department_id) = (SELECT salary,department_id
+FROM employee
+WHERE first_name = 'DANIEL');
+
+
+19.- Nombre, dirección, ciudad y estado de los clientes que tienen como crédito el
+mismo que el MINimo credito asociado a los clientes que representa el vendedor cuyo
+apellido es TURNER
+
+SELECT customer_id, name, credit_limit
+FROM customer
+WHERE (credit_limit) = (SELECT MIN(credit_limit)
+FROM customer
+WHERE salesperson_id = (SELECT employee_id
+FROM employee
+WHERE last_name='TURNER'));
+
+
+20.- Nombre del producto del que se han vendido mas unidades.
+
+SELECT description
+FROM product
+WHERE product_id = (SELECT product_id
+FROM item
+GROUP BY product_id
+HAVING sum(quantity) = (SELECT MAX(SUM(quantity))
+FROM item
+GROUP BY product_id));
+
+
+21.- Nombre del cliente que menos ha gastado
+
+SELECT name
+FROM customer
+WHERE customer_id = (SELECT customer_id
+FROM sales_order
+GROUP BY customer_id
+HAVING SUM(total) = (SELECT MIN(SUM(total))
+FROM sales_order
+GROUP BY customer_id));
+
+
+22.- Nombre del departamento con menor sueldo.
+
+SELECT name, department_id
+FROM department
+WHERE department_id IN ( SELECT department_id
+FROM employee
+GROUP BY department_id
+HAVING MIN(salary) = (SELECT MIN(MIN(salary))
+FROM employee
+GROUP BY department_id));
+
+
+23.- Nombre, apellido y fecha de contratación de los empleados contratados el mes de
+menor grado de contratación.
+
+SELECT last_name, first_name,salary, hire_date
+FROM employee
+WHERE to_char(hire_date,’month’) IN ( SELECT to_char(hire_date, 'month')
+FROM employee
+GROUP BY to_char(hire_date,'month')
+HAVING COUNT(*)= ( SELECT MIN(COUNT(*))
+FROM employee
+GROUP BY to_char(hire_date,'month')));
+
+
+24.- Nombre de los clientes (customer) que son atendidos por vendedores que
+trabajan en el departamento de ventas de Boston.
+
+SELECT name
+FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id = (SELECT department_id
+FROM department
+WHERE name = 'SALES' AND location_id = (SELECT location_id
+FROM location
+WHERE regional_GROUP = 'BOSTON')));
+
+
+25.- Ciudad donde se ubica el departamento donde se paga más a los empleados.
+
+SELECT regional_GROUP
+FROM location
+WHERE location_id = (SELECT location_id
+FROM department
+WHERE department_id = (SELECT department_id
+FROM employee
+GROUP BY department_id
+HAVING SUM(salary) = (SELECT MAX(SUM(salary))
+FROM employee
+GROUP BY department_id)));
+
+
+26.- ¿Cuantos empleados tiene el departamento que mas empleados tiene realizANDo
+la función vendedor (SALESPERSON)
+
+SELECT COUNT(*)
+FROM employee
+GROUP BY department_id
+HAVING department_id= (SELECT department_id
+FROM employee
+WHERE job_id= (SELECT job_id
+FROM job
+WHERE function='SALESPERSON')
+GROUP BY department_id
+HAVING COUNT(*)= (SELECT MAX(COUNT(*))
+FROM employee
+WHERE job_id= (SELECT job_id
+FROM job
+WHERE function='SALESPERSON')
+GROUP BY department_id));

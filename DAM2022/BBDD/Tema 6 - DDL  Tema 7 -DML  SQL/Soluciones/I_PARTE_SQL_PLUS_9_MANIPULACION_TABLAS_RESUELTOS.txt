@@ -1,0 +1,245 @@
+1. Crear las siguientes tablas de acuerdo con las restricciones que se mencionan:
+
+CREATE TABLE TIENDAS
+(
+NIF VARCHAR2(10) ,
+NOMBRE VARCHAR2(20),
+DIRECCIÓN VARCHAR2(20),
+POBLACIÓN VARCHAR2(20),
+PROVINCIA VARCHAR2(20),
+CODPOSTAL NUMBER(5),
+Constraint tiendas_pk PRIMARY KEY(NIF),
+Constraint tiendas_provincia_mayusculas CHECK(PROVINCIA=UPPER(PROVINCIA))
+);
+
+CREATE TABLE FABRICANTES
+(
+COD_FABRICANTE NUMBER(3),
+NOMBRE VARCHAR2(15),
+PAIS VARCHAR2(15),
+Constraint fabricantes_pk PRIMARY KEY(COD_FABRICANTE),
+Constraint fabricantes_nombre_mayusculas CHECK (NOMBRE=UPPER(NOMBRE)),
+Constraint fabricantes_pais_mayusculas CHECK(PAIS=UPPER(PAIS))
+);
+
+CREATE TABLE ARTICULOS
+(
+ARTICULO VARCHAR2(20),
+COD_FABRICANTE NUMBER(3),
+PESO NUMBER(3),
+CATEGORIA VARCHAR2(10),
+PRECIO_VENTA NUMBER (4),
+PRECIO_COSTO NUMBER (4),
+EXISTENCIAS NUMBER (5),
+Constraint articulos_pk PRIMARY KEY (ARTICULO, COD_FABRICANTE, PESO, CATEGORIA),
+Constraint articulos_cod_fabricante_fk FOREIGN KEY (COD_FABRICANTE)
+REFERENCES FABRICANTES(COD_FABRICANTE),
+Constraint articulos_peso_positivo CHECK(PESO>0),
+Constraint articulos_prec_ven_pos CHECK(PRECIO_VENTA>0),
+Constraint articulos_prec_cos_pos CHECK(PRECIO_COSTO>0),
+Constraint articulos_cat_p_s_t CHECK(CATEGORIA IN('Primera','Segunda', 'Tercera'))
+);
+
+CREATE TABLE PEDIDOS
+(
+NIF VARCHAR2(10),
+ARTICULO VARCHAR2(20) ,
+COD_FABRICANTE NUMBER(3),
+PESO NUMBER(3)
+constraint pedidos_peso_sinnulos NOT NULL,
+CATEGORIA VARCHAR2(10),
+FECHA_PEDIDO DATE ,
+UNIDADES_PEDIDAS NUMBER(4)
+constraint pedidos_unid_ped_sinnulos NOT NULL,
+Constraint pedidos_pk PRIMARY KEY (NIF,ARTICULO, COD_FABRICANTE, PESO,CATEGORIA, FECHA_PEDIDO),
+Constraint pedidos_cod_fabricante_fk FOREIGN KEY(COD_FABRICANTE)
+REFERENCES FABRICANTES(COD_FABRICANTE),
+Constraint pedidos_ar_cod_fa_pe_ca_fk FOREIGN KEY (ARTICULO, COD_FABRICANTE, PESO, CATEGORIA)
+REFERENCES ARTICULOS(ARTICULO, COD_FABRICANTE, PESO, CATEGORIA) on delete cascade,
+Constraint pedidos_nif_fk FOREIGN KEY (NIF)
+REFERENCES TIENDAS(NIF),
+Constraint pedidos_unid_ped_pos CHECK(UNIDADES_PEDIDAS>0),
+Constraint pedidos_categoria_p_s_t CHECK(CATEGORIA IN('Primera','Segunda', 'Tercera'))
+);
+
+CREATE TABLE VENTAS
+(
+NIF VARCHAR2(10),
+ARTICULO VARCHAR2(20) ,
+COD_FABRICANTE NUMBER(3),
+PESO NUMBER(3),
+CATEGORIA VARCHAR2(10) ,
+FECHA_VENTA DATE ,
+UNIDADES_VENDIDAS NUMBER(4),
+Constraint ventas_pk PRIMARY KEY (NIF,ARTICULO,COD_FABRICANTE, PESO, CATEGORIA, FECHA_VENTA),
+Constraint ventas_cod_fabricante_fk FOREIGN KEY (COD_FABRICANTE)
+REFERENCES FABRICANTES(COD_FABRICANTE),
+Constraint ventas_ar_cod_fa_pe_cat_fk FOREIGN KEY (ARTICULO, COD_FABRICANTE, PESO, CATEGORIA)
+REFERENCES ARTICULOS (ARTICULO, COD_FABRICANTE, PESO, CATEGORIA) ON DELETE CASCADE,
+Constraint ventas_nif_fk FOREIGN KEY (NIF)
+REFERENCES TIENDAS (NIF),
+Constraint ventas_unid_vend_pos CHECK(UNIDADES_VENDIDAS>0),
+Constraint ventas_categoria_p_s_t CHECK(CATEGORIA IN('Primera','Segunda', 'Tercera'))
+);
+
+2º. Añadir una restriccion a la tabla TIENDAS para que el NOMBRE de la tienda sea del tipo titulo.
+
+ALTER TABLE TIENDAS
+ADD CONSTRAINT Tiendas_nombre_titulo CHECK (NOMBRE=INITCAP(NOMBRE));
+
+3º.- visualizar las constraints definidas para las tablas anteriores.
+
+SELECT TABLE_NAME, CONSTRAINT_NAME
+FROM USER_CONSTRAINTS
+WHERE TABLE_NAME IN ('ARTICULOS','TIENDAS', 'FABRICANTES', 'PEDIDOS' ,'VENTAS');
+
+4º.- modificar las columnas de las tablas PEDIDOS y VENTAS para que las UNIDADES_VENDIDAS y las UNIDADES_PEDIDAS puedan almacenar cantidades numéricas de 6 dígitos.
+
+ALTER TABLE PEDIDOS
+MODIFY (UNIDADES_PEDIDAS NUMBER(6));
+ALTER TABLE VENTAS
+MODIFY (UNIDADES_VENDIDAS NUMBER(6));
+
+5º. Impedir que se den de alta mas tiendas en la provincia de ‘TOLEDO’.
+
+ALTER TABLE TIENDAS
+ADD CONSTRAINT tiendas_no_mas_toledo CHECK (PROVINCIA !='TOLEDO');
+
+6º.- Añadir a las tablas PEDIDOS y VENTAS una nueva columna para que almacenen el PVP del articulo.
+
+ALTER TABLE PEDIDOS
+ADD(PVP NUMBER(4));
+ALTER TABLE VENTAS
+ADD(PVP NUMBER(4));
+
+7º.- Añadir el siguiente comentario a la tabla VENTAS: Unidades vendidas de los distintos artículos de los fabricantes
+
+Comment on table ventas is ‘Unidades vendidas de los distintos artículos de los fabricantes ‘;
+
+8º.- Añadir el siguiente comentario al campo PESO de la tabla PEDIDOS ‘peso del articulo pedido’
+
+Comment on column pedidos.peso is ‘peso del articulo pedido’;
+
+9º.- Crear un sinonimo llamado PED para la tabla pedidos
+
+CREATE SYNONYM PED FOR DAI2T13.PEDIDOS
+
+10º.- cambiar de nombre a la tabla ventas y llamarla nuevas_ventas.
+
+RENAME VENTAS TO NUEVAS_VENTAS;
+
+11º..- Borrar la tabla Tiendas.
+
+DROP TABLE TIENDAS CASCADE CONSTRAINTS;
+
+12º Cree el siguiente modelo de datos:
+
+Añadiendo las Constraint que no sean de primary key, foreign key o no admitir nulos después de crear las tablas.
+
+CREATE TABLE SOCIOS
+(
+COD_SOCIO VARCHAR2(8) PRIMARY KEY,
+NOMBRE VARCHAR2(20),
+APELLIDOS VARCHAR2(30),
+DOMICILIO VARCHAR2(30),
+POBLACIÓN VARCHAR2(20),
+COD_POSTAL VARCHAR2(5),
+PROVINCIA VARCHAR2(20),
+TELEFONO VARCHAR2(9),
+SEXO VARCHAR2(1),
+OBSERVACIONES LONG,
+Constraint socios_telefono_u UNIQUE(TELEFONO)
+);
+
+CREATE TABLE TEMAS
+(
+COD_TEMA VARCHAR2(1) PRIMARY KEY,
+TEMA VARCHAR2(20)
+);
+
+CREATE TABLE PELICULAS
+(
+COD_PELICULA VARCHAR2(1) PRIMARY KEY,
+TITULO VARCHAR2(40),
+INTERPRETE_1 VARCHAR2(30),
+INTERPRETE_2 VARCHAR2(30),
+DIRECTOR VARCHAR2(30),
+PRODUCTORA VARCHAR2(30),
+COD_TEMA VARCHAR2(1),
+AÑO_PRODUCCION VARCHAR2(4),
+DURACCION NUMBER(3),
+PRECIO_COSTE NUMBER(3),
+Constraint peliculas_cod_tema_fk FOREIGN KEY (COD_TEMA)
+REFERENCES TEMAS(COD_TEMA)
+Constraint peliculas_titulo_u UNIQUE (TITULO)
+);
+
+CREATE TABLE ALQUILER
+(
+COD_ALQUILER VARCHAR2(1) PRIMARY KEY,
+COD_SOCIO VARCHAR2(8),
+COD_PELICULA VARCHAR2(1),
+FECHA_ALQUILER DATE,
+FECHA_DEVOLUCION DATE,
+DEVUELTA VARCHAR2(2),
+PRECIO NUMBER(2),
+Constraint alquiler_cod_pelicula_fk FOREIGN KEY (COD_PELICULA)
+REFERENCES PELICULAS(COD_PELICULA),
+Constraint alquiler_cod_socio_fk FOREIGN KEY (COD_SOCIO)
+REFERENCES SOCIOS(COD_SOCIO)
+);
+
+ALTER TABLE SOCIOS
+ADD CONSTRAINT socios_sexo_mayus CHECK (UPPER(SEXO) in (‘H’,’M’));
+ALTER TABLE PELICULAS
+ADD (
+CONSTRAINT peliculas_duracion_positivo CHECK (DURACION>0),
+CONSTRAINT peliculas_prec_cos_pos CHECK (PRECIO_COSTE>0)
+);
+
+ALTER TABLE ALQUILER
+ADD CONSTRAINT alquiler_devuelta_si_no CHECK ( DEVUELTA IN (‘si’,’no’));
+ALTER TABLE ALQUILER
+ADD CONSTRAINT alquiler_fecha CHECK ( fecha_devolucion>fecha_alquiler);
+ALTER TABLE ALQUILER
+ADD CONSTRAINT alquiler_precio CHECK ( precio>=0);
+
+13º.- modificar las columnas de las tablas TEMAS y PELICULAS para que las Cod_tema puedan almacenar cantidades numéricas de 4 dígitos.
+
+ALTER TABLE TEMAS
+MODIFY (COD_TEMA NUMBER(4));
+ALTER TABLE PELICULAS
+MODIFY (COD_TEMA NUMBER(4));
+
+14.-Nos mosqueamos con el proveedor de películas de la productora Warner Bros. Impedir que se den de alta más películas de dicha productora en la tabla películas.
+
+ALTER TABLE PELICULAS
+ADD CONSTRAINT peliculas_no_mas_warner CHECK (PRODUCTORA !='Warner Bros');
+
+O bien
+
+ALTER TABLE PELICULAS
+ADD CONSTRAINT productora_no_wb CHECK (PRODUCTORA != 'Warner Bros' OR
+COD_PELICULA IN (1, 3));
+
+Si ya hemos introduccido datos
+
+15º.- Añadir el siguiente comentario a la tabla PELICULAS: “Peliculas producidas a partir de la segunda mitad del siglo XX”
+
+Comment on table peliculas is ‘peliculas producidas a partir de la segunda mitad del siglo XX ‘;
+
+16º.- añadir el siguiente comentario al campo interprete_1 de la tabla PELICULAS: ‘actor principal’
+
+Comment on column películas.interprete_1 is ‘actor principal’;
+
+17.- crear un sinónimo llamado ALQ para la tabla ALQUILER
+
+CREATE SYNONYM ALQ FOR ALQUILER
+
+18.- Cambiar de nombre a la tabla SOCIOS y llamarla SOCIOS_NUEVOS
+
+RENAME SOCIOS TO SOCIOS_NUEVOS;
+
+19.- Borrar la tabla PELICULAS
+
+DROP TABLE PELICULAS CASCADE CONSTRAINTS;

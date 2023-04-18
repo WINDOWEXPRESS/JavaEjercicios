@@ -1,0 +1,126 @@
+1.-  Sumar 15 horas a la fecha de hoy.
+
+select sysdate + 15/24
+from dual;
+
+2.-  Mostrar el texto del día en el cual nacimos. ¿en que día naciste?
+
+select to_char(to_date('21/12/1980','dd/mm/yyyy'),'day')
+from dual;
+
+3.-  ¿En qué día de la semana caerá el primer día del próximo año?. Esta consulta ha de ser valida independientemente del año en el que nos encontremos
+
+select to_char(to_date(add_months(trunc(sysdate, 'year'),12)), 'FM day,  DD "de" Month "de" YYYY') as año_siguiente
+from dual;
+
+4.-  Cuantos días tiene el mes de febrero del año que viene. Esta consulta ha de ser valida independientemente del año en el que nos encontremos
+
+select add_months(trunc(sysdate + 365, 'year'), 2)- add_months(trunc(sysdate + 365, 'year'), 1) as fecha
+from dual;
+
+5.-  Muestra de cada empleado, su nombre y nombre del mes en que llegó a la empresa.
+
+select first_name, to_char(hire_date,'Month')
+from employee;
+
+6.-  Visualiza el nombre de cada empleado y el número de meses (sin decimales) que lleva trabajando en la empresa.
+
+select first_name, round(months_between(sysdate,hire_date))
+from employee;
+
+7.-  ¿Cuántos meses lleva trabajando el empleado que más meses lleva?
+
+select max(round(months_between(sysdate,hire_date)))
+from employee;
+
+8.-  ¿Cuántos empleados han sido contratados durante el segundo trimestre de cualquier año?
+
+select count(*)
+from employee
+where to_char(hire_date,'Q')=2;
+
+9.-  ¿Cuántos pedidos (SALES_ORDER) se han realizado entre los meses de julio y agosto desde que lleva la empresa funcionando?.
+
+select count(*)
+from sales_order
+where to_char(order_date,’MM’)  in (07, 08)
+
+10.-  Visualiza el nº de empleados que hay contratados en meses de 30 dias.
+
+select count(*)
+from employee
+where to_char (last_day (hire_date), 'DD')=30;
+
+11.-  Visualiza la media del salario de los empleados contratados en el año 1986
+
+select avg(salary)
+from employee
+where to_char (hire_date,'yyyy')=1986;
+
+12.-  ¿Cuántos pedidos han tardado más de 6 días en servirse?
+(SHIP_DATE - ORDER_DATE > 6).
+
+select count(*)
+from sales_order
+where (ship_date- order_date) > 6;
+
+13.-  Visualiza el nº de empleados cuyo apellido empieza por S y fueron contratados en el 2º trimestre de cualquier año
+
+select count(hire_date)
+from employee
+where last_name like 'S%' and to_char(hire_date,'Q') = 2;
+
+14.-  Muestra el nombre de cada mes y el número de empleados contratados en dicho mes
+
+select to_char(hire_date,'Month'), count(*)
+from employee
+group by to_char(hire_date,'Month');
+
+15.-  ¿Cuántos empleados se han contratado el mes de mayor grado de contratación?
+
+select max(count(*))
+from employee
+group by to_char(hire_date,'month');
+
+16.-  Muestra de cada mes del año, el nombre y número de pedidos realizados a lo largo de todos los años que lleva la empresa funcionando.
+
+select distinct( to_char(order_date,'MM')), count(*)
+from sales_order
+group by to_char (order_date,'MM');
+
+17.-  Visualiza de cada departamento, su codigo, media salarial, nº de empleados que aparecen en la media, teniendo en cuenta solo aquellos que llevan trabajando mas de 250 meses en la empresa.
+
+select department_id, avg(salary), count(*)
+from employee
+where months_between(sysdate,hire_date)>250
+group by department_id;
+
+18.-  Visualiza, por departamento, la media del salario de los empleados contratados en 1985.
+
+select  avg(salary)
+from employee
+where to_char (hire_date,'yyyy')=1985
+group by department_id;
+
+19.-  Visualiza el codigo de los productos dejados de comercializar en 1989, asi como el precio maximo que tuvieron y su precio minimo.
+
+select product_id, max(list_price), min(list_price)
+from price
+where to_char(end_date, 'yyyy')=1989
+group by product_id;
+
+20.-  En qué meses del año 1989 se han realizado por lo menos 2 pedidos?
+
+select distinct(to_char(order_date,'MM'))
+from sales_order
+where to_char(order_date,'YYYY')=1989
+group by to_char(order_date,'MM')
+having count(*)> 1;
+
+21.-  Visualiza el codigo de departamento y la media salarial de los departamentos con mas de dos empleados contratados en cualquier mes de abril.
+
+select department_id, avg(salary), count(*)
+from employee
+where to_char(hire_date,'mm') = 4
+group by department_id
+having count(*)>2;

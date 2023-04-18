@@ -1,0 +1,130 @@
+1.- Muestra de cada empleado, su nombre y nombre de función que realiza.
+
+SELECT employee.first_name, job.function
+FROM employee, job
+where employee.job_id=job.job_id;
+
+2.- Muestra el código y nombre de los departamentos donde trabaja algún empleado, puede que haya algún departamento que no tiene empleados.
+
+SELECT distinct(employee.department_id), department.name
+FROM employee, department
+WHERE employee.department_id=department.department_id;
+
+3.- Visualiza el nombre de los clientes junto al nombre del empleado que es su representante de ventas.
+
+SELECT customer.name, employee.first_name
+FROM customer, employee
+WHERE employee.employee_id=customer.salesperson_id;
+
+4.- Mostrar de cada empleado su nombre y el grado salarial que le corresponde.
+Combinacion no comun
+
+SELECT employee.first_name, salary_grade.grade_id
+FROM employee, salary_grade
+WHERE employee.salary between lower_bound AND upper_bound;
+
+5.- Nombre de cada empleado y al lado el nombre de la persona que es su jefe.
+Autocombinación
+
+SELECT empleado.first_name, jefe.first_name
+FROM employee empleado, employee jefe
+WHERE empleado.manager_id=jefe.employee_id;
+
+6.- Nombre de cada empleado y al lado el nombre de la persona que es su jefe, y si no tiene que aparezca "No tiene jefe".
+
+SELECT empleado.first_name, nvl (jefe.first_name,'no tiene jefe')
+FROM employee empleado, employee jefe
+WHERE empleado.manager_id=jefe.employee_id(+);
+
+7.- Nombre de empleados y nombre del depto donde trabajan de aquellos que cobran
+comisión.
+
+SELECT employee.first_name, employee.department_id,department.name,
+employee.commission
+FROM employee, department
+WHERE employee.department_id=department.department_id
+AND commission is not null AND commission !=0;
+
+8.- Cuantos empleados hay en cada depto de ventas.
+
+SELECT COUNT(*), location_id
+FROM employee, department
+WHERE employee.department_id=department.department_id
+AND department.name='SALES' GROUP BY location_id;
+
+9.- Muestra el nombre de los clientes cuyo representante de ventas es WARD.
+
+SELECT customer.name
+FROM customer, employee
+WHERE customer.salesperson_id=employee.employee_id
+AND employee.last_name='WARD';
+
+10.- Muestra el nombre de los empleados que son vendedores (SALESPERSON)
+
+SELECT employee.first_name
+FROM employee, job
+WHERE employee.job_id=job.job_id
+AND job.function='SALESPERSON';
+
+11.- ¿Cuántos empleados son vendedores?
+
+SELECT COUNT(*)
+FROM employee, job
+WHERE employee.job_id=job.job_id
+AND job.function='SALESPERSON';
+
+12.- ¿Cuál es el valor del pedido de mayor valor que ha realizado el cliente JOCKSPORTS?
+
+SELECT max(sales_order.total)
+FROM sales_order, customer
+WHERE sales_order.customer_id=customer.customer_id
+AND customer.name='JOCKSPORTS';
+
+13.- Muestra de cada producto, su nombre y precio (LIST_PRICE) que se le aplica actualmente.
+
+SELECT product.description, price.list_price
+FROM product, price
+WHERE product.product_id=price.product_id
+AND price.end_date is null;
+
+14.- ¿Cuánto dinero se ha recaudado con la venta de ‘ACE TENNIS RACKET I’?.
+
+SELECT sum(item.total)
+FROM product, item
+WHERE product.product_id=item.product_id
+AND product.description='ACE TENNIS RACKET I';
+
+15.- Muestra de cada departamento, su nombre y número de empleados que trabajan en él; considera los departamentos con el mismo nombre y en distintas localidades, como un único departamento.
+
+SELECT (department.name), COUNT(*)
+FROM employee, department
+WHERE employee.department_id=department.department_id
+GROUP BY department.name;
+
+16.- Visualiza para cada producto, su nombre y total de unidades vendidas de dicho producto.
+
+SELECT product.description, sum(item.quantity)
+FROM item, product
+WHERE item.product_id=product.product_id
+GROUP BY product.description;
+
+17.- Visualiza de cada cliente, su nombre y el valor del pedido de mayor valor que ha realizado hasta el momento.
+
+SELECT customer.name, max(sales_order.total)
+FROM customer, sales_order
+WHERE customer.customer_id=sales_order.customer_id
+GROUP BY customer.name;
+
+18.- Visualiza de cada cliente, su nombre y la suma de los totales de todos los pedidos que ha realizado.
+
+SELECT customer.name, sum(sales_order.total)
+FROM customer, sales_order
+WHERE customer.customer_id=sales_order.customer_id
+GROUP BY customer.name;
+
+19.- Mostrar de cada depto su código, su nombre y el nº de empleados que tiene, pero si no tiene empleados que salga un 0.
+
+SELECT department.department_id, department.name, COUNT(employee.employee_id)
+FROM employee, department
+WHERE employee.department_id(+)=department.department_id
+GROUP BY department.department_id, department.name;

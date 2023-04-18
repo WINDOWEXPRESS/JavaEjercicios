@@ -1,0 +1,325 @@
+1.- Insertar un nuevo departamento alumnos con el código 44 sin localidad.
+
+INSERT INTO department
+VALUES(44,'ALUMNOS',null);
+
+-------- recuerda --------
+COMMIT: guarda lo cambiado en la sesión ó haciendo exit.
+ROOLBACK: elimina lo guardado en memoria desde el inicio de la sesión.
+
+2.- Insertar un empleado nuevo llamado JUAN GARCIA que va a trabajar en las mismas condiciones que ALICE y va a ser su código + 1.
+
+INSERT INTO employee
+SELECT employee_id + 1 , 'GARCIA', 'JUAN', middle_initial, job_id, manager_id, sysdate, salary, commission, department_id
+FROM employee WHERE first_name = 'ALICE';
+
+3.- Al final no se incorpora JUAN GARCÍA, sino que se incorpora PEPE PEREZ con las mismas condiciones. Modificar el registro.
+
+UPDATE employee
+SET first_name = 'PEPE', last_name= 'PEREZ'
+WHERE first_name ='JUAN';
+
+4.- Subir el sueldo un 10% a los empleados del departamento 20 y un 5% al resto
+
+UPDATE employee SET salary =salary * 1,05
+WHERE department _id <> 20;
+
+UPDATE employee SET salary * 1,10
+WHERE department_id =20;
+
+5.- Poner una comisión del 10% del salario a los empleados cuya función sean analistas:
+
+UPDATE employee
+SET commission =salary *0.10
+WHERE job_id = (SELECT job_id
+FROM job
+WHERE function='ANALYST');
+
+6.- Poner a SHAPE UP con el máximo crédito UPDATE customer
+
+SET credit_limit= (SELECT max(credit_limit)
+FROM customer)
+WHERE name='SHAPE UP';
+
+7.- Modificar el nombre de todos los departamentos anteponiendo su código de departamento – y el resto del nombre.
+
+UPDATE department
+SET name=department_id||' '||name;
+
+8.- Borrar todos los productos cuya fecha de comienzo sea enero de 1989
+
+delete FROM Price
+WHERE to_char(start_date, 'yyyy-mm')= '1989-01';
+
+9.- poner una comisión del 10% del salario a aquellos empleados del departamento 20 que no tienen comision
+
+UPDATE employee
+SET commission = salary * 0.1
+WHERE department_id =20 and commission is null;
+
+10.- Modificar, del departamento 20, aquellos empleados que tienen sueldo máximo, poniéndole como comisión el 50% del salario.
+
+UPDATE employee
+SET commission= salary*0.5
+WHERE department_id=20 and salary= (SELECT max(salary)
+FROM employee
+WHERE department_id=20);
+
+11.- Pon una comisión del 20% del salario al empleado que tenga mayor comisión.
+
+UPDATE employee
+SET commission= salary*0.2
+WHERE commission = (SELECT max(commission)
+FROM employee);
+
+12.- Aumentar el salario un10% mas la comisión a los empleados que trabajan en el departamento 30 y tienen un salario inferior a la media salarial de su departamento, estos empleados han de tener como función de trabajo analista.
+
+UPDATE employee
+SET salary=salary*1.1 +nvl(commission,0), job_id = (SELECT job_id
+FROM job
+WHERE function='ANALYST')
+WHERE department_id=30 and salary< ( SELECT avg(salary)
+FROM employee
+WHERE department_id=30);
+
+13.- El producto que menos se ha vendido ha de pasar a llamarse Patatas fritas.
+
+UPDATE product
+SET description = 'Patatas fritas'
+WHERE product_id = ( SELECT product_id
+FROM item
+GROUP BY product_id
+HAVING sum(quantity) = ( SELECT min(sum(quantity))
+FROM item
+GROUP BY product_id));
+
+14.- Dar de alta dos clientes cuyo vendedor asociado sea el 7499 y tengan como crédito limite 6000. Las restricciones para insertar son:
+
+a.- campo customer_id que ha de tener valor único por ser primary_key.
+b.- que el campo state ha de estar en mayúsculas
+c.- el campo zip_code ha de tener 5 ó 9 caracteres
+d.- el campo salesperson_id ha de tener un valor que coincida con alguno de los valores del campo employee_id de la tabla employee.
+
+Si los valores en dichos campos no cumplen las restricciones no nos deja insertar.
+
+INSERT INTO customer
+VALUES(150, 'deportes Julio', 'lago 15', 'MADRID', 'MA',28045,23,5769823,7499,6000, 'ninguno');
+
+INSERT INTO customer
+VALUES (151, 'deportes juan', 'hongo 43', ' TOLEDO', 'CM',45700,46,8789800,7499,6000, 'ninguno');
+
+15.- A los empleados con menos antigüedad en la empresa, considerando menos antigüedad a todos los que entraron el ultimo año que se contrató, les vamos a poner como fecha de entrada en la empresa 01/01/2006, el salario de DOYLE y como jefe a JOHN.
+
+UPDATE employee
+SET hire_date = to_date('01012006'), salary = ( SELECT salary
+FROM employee
+WHERE last_name='DOYLE'), manager_id= (SELECT employee_id
+FROM employee
+WHERE first_name='JOHN')
+WHERE to_char(hire_date,'yyyy') = (SELECT max ( to_char(hire_date,'yyyy'))
+FROM employee);
+
+16.- Insertar un empleado de apellido Fernández , nombre Julián, con nº de identificación 6000, la fecha de alta será la de hoy el salario el de GREGORY mas el 20% y el resto de los datos los mismos que los de GREGORY.
+
+INSERT INTO employee
+SELECT 6000, 'fernandez', 'julian', middle_initial, job_id, manager_id, sysdate, salary*1.2, commission, department_id
+FROM emplee
+WHERE first_name='GREGORY';
+
+17.- Modificar el nº de departamento de Julian Fernández, el nº de departamento será el departamento donde hay más empleados cuya función sea CLERK.
+
+UPDATE employee
+SET department_id = (SELECT department_id
+FROM employee
+WHERE job_id = (SELECT job_id
+FROM job
+WHERE function='CLERK')
+GROUP BY department_id
+HAVING count(*) = (SELECT max(count(*))
+FROM employee
+WHERE job_id = ( SELECT job_id
+FROM job
+WHERE function='CLERK')
+GROUP BY department_id))
+WHERE last_name='Fernandez' and first_name='julian';
+
+18.- Borrar todos los departamentos de la tabla departamentos para los cuales no existen empleados en la tabla empleados.
+
+DELETE FROM department
+WHERE department_id IN ( SELECT department_id
+FROM department
+MINUS
+SELECT department_id
+FROM employee);
+
+19.- Borrar aquellos clientes que no han realizado compras.
+
+DELETE FROM customer
+WHERE customer_id not IN ( SELECT distinct (customer_id)
+FROM sales_order);
+
+20.- Borrar todos los empleados cuyo jefe es DOYLE.
+
+DELETE FROM item
+WHERE order_id IN ( SELECT order_id
+FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN ( SELECT employee_id
+FROM employee
+WHERE manager_id = ( SELECT employee_id
+FROM employee
+WHERE last_name='DOYLE'))));
+DELETE FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN ( SELECT employee_id
+FROM employee
+WHERE manager_id = ( SELECT employee_id
+FROM employee
+WHERE last_name='DOYLE')));
+
+DELETE FROM customer
+WHERE salesperson_id IN ( SELECT employee_id
+FROM employee
+WHERE manager_id = ( SELECT employee_id
+FROM employee
+WHERE last_name='DOYLE'));
+DELETE FROM employee
+WHERE manager_id= ( SELECT employee_id
+FROM employee
+WHERE last_name='DOYLE');
+
+21.- Borrar el departamento 43
+
+1º.- Borrar los empleados que no son del departamento 43 cuyo manager_id pertenece al departamento 43 (Para borrar un empleado que es manager en el departamento 43 este no tiene que ser jefe de ningun empleado en ningún departamento)
+
+DELETE FROM item
+WHERE order_id IN (SELECT order_id
+FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id!=43 and manager_id IN ( SELECT employee_id
+FROM employee
+WHERE department_id=43))));
+
+DELETE FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE deparment_id!=43 and manager_id IN ( SELECT employee_id
+FROM employee
+WHERE department_id=43)));
+
+DELETE FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id!=43 AND manager_id IN ( SELECT employee_id
+FROM employee
+WHERE department_id=43));
+
+DELETE FROM employee
+WHERE department_id!=43 AND manager_id IN ( SELECT employee_id
+FROM employee
+WHERE department_id=43);
+
+2º.- Borrar todos los empleados que pertenecen al departamento 43 y su manager tb al 43
+
+DELETE FROM item
+WHERE order_id IN (SELECT order_id
+FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id =43 AND manager id IN (SELECT employee_id
+FROM employee
+WHERE department_id =43))));
+
+DELETE FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id =43 AND manager _id IN (SELECT employee_id
+FROM employee
+WHERE department_id =43)));
+
+DELETE FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id = 43 AND manager_id IN (SELECT employee_id
+FROM employee
+WHERE department_id =43));
+
+DELETE FROM employee
+WHERE department_id=43 AND manager_id IN ( SELECT employee_id
+FROM employee
+WHERE department_id =43);
+
+3º.- borrar los empleados que pertenecen al departamento 43 cuyo manager no pertenece al
+departamento 43
+
+DELETE FROM item
+WHERE order_id IN (SELECT order_id
+FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id =43 AND manager id IN (SELECT employee_id
+FROM employee
+WHERE department_id!=43))));
+
+DELETE FROM sales_order
+WHERE customer_id IN ( SELECT customer_id
+FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id =43 AND manager _id IN (SELECT employee_id
+FROM employee
+WHERE department_id!=43)));
+
+DELETE FROM customer
+WHERE salesperson_id IN (SELECT employee_id
+FROM employee
+WHERE department_id = 43 AND manager_id IN (SELECT employee_id
+FROM employee
+WHERE department_id !=43));
+
+DELETE FROM employee
+WHERE department_id=43 AND manager_id IN ( SELECT employee_id
+FROM employee
+WHERE department_id !=43);
+
+4º.- borrar el departamento 43
+
+DELETE FROM department
+WHERE department_id=43;
+
+
+22.- Hacer rollback. Insertar los siguientes empleados en la tabla employee:
+
+Comprobar el resultado del ejercicio anterior insertando los siguientes empleados en la tabla empleados:
+
+Maria camacho de codigo 8000 realiza la funcion 669 tiene como jefe al empleado 7820, la fecha de entrada en la empresa es la de hoy, su salario es 1300, la comision 50, pertenece al departamento 20 y su middle_initial es Q.
+
+INSERT INTO employee
+VALUES(8000, 'camacho', 'maria', 'q',669,7820,sysdate,1300,50,20);
+
+empleado que no pernetece al departamento 43 pero tiene como jefe a un empleado del departamento 43.
+
+Bernabé Gonzalez de codigo 9000 realiza la funcion 670 tiene como jefe al empleado 7820 la fecha de entrada en la empresa es la de hoy su salario es 6000, la comision 600 pertenece al departamento 43 y su middle initial es S.
+
+INSERT INTO employee
+VALUES(9000, 'gonzalez', 'bernabe', 's',670,7820,sysdate,6000,600,43);
+
+empleado del departamento 43 que tiene como jefe un empleado del departamento 43.
+
+Comprobar que el ejercicio anterior sigue siendo válido. Es decir que sigue borrando el departamento 43.
+
+DELETE FROM department
+WHERE department_id=43;

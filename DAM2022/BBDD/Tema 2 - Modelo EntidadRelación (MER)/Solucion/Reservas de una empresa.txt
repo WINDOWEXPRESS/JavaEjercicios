@@ -1,0 +1,23 @@
+Se desea diseñar una BD sobre la información de las reservas de una empresa dedicada al alquiler de automóviles teniendo en cuenta que:
+
+Un determinado cliente puede tener en un momento dado hechas varias reservas.
+
+De cada cliente se desea almacenar su Dni, nombre, dirección y teléfono.
+
+Además dos clientes se diferencian por un código único.
+
+Cada cliente puede ser avalado por otro cliente de la empresa.
+
+Una reserva la realiza un único cliente pero puede involucrar a varios coches.
+
+Es importante registrar la fecha de inicio y final de la reserva (todos los coches involucrados salen a la vez, si no, se harán distintas reservas), el precio de alquiler de cada uno de los coches, los litros de gasolina que tiene cada coche en el momento de realizar la reserva, el precio total de la reserva y un indicador de si los coches de la reserva han sido entregados.
+
+No se mantienen los datos de reservas anteriores.
+
+Todo coche tiene siempre asignado un determinado garaje que no puede cambiar.
+
+De cada coche se requiere la matrícula, el modelo, el color y la marca; de los garajes se almacena únicamente un código.
+
+Cada reserva se realiza en una determinada agencia, pudiendo estar éstas situadas en diferentes ciudades de diferentes países.
+
+De las agencias almacenamos un código, país, ciudad, dirección y teléfonos de contacto.

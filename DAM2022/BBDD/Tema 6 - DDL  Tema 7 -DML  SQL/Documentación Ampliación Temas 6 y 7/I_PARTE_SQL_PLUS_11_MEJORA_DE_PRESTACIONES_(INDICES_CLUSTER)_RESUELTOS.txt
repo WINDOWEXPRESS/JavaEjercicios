@@ -1,0 +1,92 @@
+1º. Selecciona a todos los “Smith” de la tabla empleados y comprueba el tiempo que tarda en ejecutarse la consulta.
+SELECT LAST_NAME
+FROM EMPLOYEE
+WHERE LAST_NAME = ‘SMITH’;
+
+2º. Crea una índice llamado IDX_APELLIDO de la tabla empleados y repite la consulta.
+CREATE INDEX IDX_APELLIDO
+ON EMPLOYEE ( LAST_NAME );
+
+SELECT LAST_NAME
+FROM EMPLOYEE
+WHERE LAST_NAME = ‘SMITH’;
+
+3º. Crea una índice llamado IDX_NOM_APE de la tabla empleados.
+CREATE INDEX IDX_NOM_APE
+ON EMPLOYEE ( FIRST_NAME, LAST_NAME );
+
+4º. Realiza una consulta que visualice el codigo_pedido y la fecha de pedido de la tabla SALES_ORDER.
+SELECT ORDER_ID, ORDER_DATE
+FROM SALES_ORDER;
+
+5º. Crea una índice llamado IDX_FECH_PEDIDOS de la tabla SALES_ORDER, para que se puedan encontrar mas rápidamente los pedidos por fecha.
+CREATE INDEX IDX_FECH_PEDIDOS
+ON SALES_ORDER ( ORDER_ID, ORDER_DATE );
+
+6º.Realiza la consulta del ejercicio 4 para ver que tarda menos en ejecutarse.
+SELECT ORDER_ID, ORDER_DATE
+FROM SALES_ORDER;
+
+7º. Mostrar de cada depto su código, su nombre y el nº de empleados que tiene, pero si no tiene empleados que salga un 0.
+select department.department_id,department.name,count(employee.employee_id)
+from employee, department
+where employee.department_id(+)=department.department_id
+group by department.department_id, department.name;
+
+8º. Crea un indice llamado IDX_COD_DEP_NOM de la tabla DEPARTMENT para que se puedan encontrar mas rapidamente los empleados por departamento.
+CREATE INDEX IDX_COD_DEP_NOM
+ON DEPARTMENT ( DEPARTMENT_ID, NAME );
+
+9º. Realiza la consulta del ejercicio 7 para ver que tarda menos en ejecutarse.
+select department.department_id,department.name,count(employee.employee_id)
+from employee, department
+where employee.department_id(+)=department.department_id
+group by department.department_id, department.name;
+
+10º. Visualizar los índices que tenemos en las tablas EMPLOYEE, DEPARTMENT y SALES_ORDER.
+SELECT *
+FROM USER_INDEXES
+WHERE TABLE_NAME IN (’EMPLOYEE’,’DEPARTMENT’,SALES_ORDER’);
+
+11º. Borra los índices creados anteriormente,
+DROP INDEX IDX_APELLIDO;
+
+DROP INDEX IDX_NOM_APE;
+
+DROP INDEX IDX_FECH_PEDIDOS;
+
+DROP INDEX IDX_COD_DEP_NOM;
+
+12º.- Agrupa las tablas ARTICULOS, PEDIDOS y NUEVAS_VENTAS creadas en los ejercicios propuestos en el tema 10. Para ello crea un cluster por todos los campos comunes.
+CREATE CLUSTER CLK_ART_PED_NVEN
+(ARTICULO VARCHAR2(20),
+COD_FABRICANTE NUMBER(3),
+PESO NUMBER(3),
+CATEGORIA VARCHAR2(10));
+
+CREATE INDEX IDX_CLK_ART_PED_NVEN
+ON CLUSTER CLK_ART_PED_NVEN;
+
+CREATE TABLE ARTICULOS1
+CLUSTER CLK_ART_PED_NVEN(ARTICULO, COD_FABRICANTE,PESO,CATEGORIA)
+AS SELECT *
+FROM ARTICULOS;
+
+CREATE TABLE PEDIDOS1
+CLUSTER CLK_ART_PED_NVEN(ARTICULO, COD_FABRICANTE,PESO,CATEGORIA)
+AS SELECT *
+FROM PEDIDOS;
+
+CREATE TABLE NUEVAS_VENTAS1
+CLUSTER CLK_ART_PED_NVEN(ARTICULO, COD_FABRICANTE,PESO,CATEGORIA)
+AS SELECT *
+FROM NUEVAS_VENTAS;
+
+13º. Borrar los cluster creados.
+DROP CLUSTER CLK_ART_PED_NVEN INCLUDING TABLES;
+
+
+IMPORTANTE Utilizar siempre una nomenclatura con prefijos y marcas que permitan localizar claramente todos los datos (tipo de índice que es, sobre que tabla, columnas o expresiones que se utilizan ..etc )
+Prk_tabla_columna (para los primary key )
+Idx_tabla_columna (índices normales, alternativos)
+FrK_tabla_columna (para los constraint con otra tabla)

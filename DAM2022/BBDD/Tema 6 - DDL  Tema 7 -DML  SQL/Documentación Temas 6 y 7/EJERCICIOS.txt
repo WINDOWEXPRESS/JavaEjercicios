@@ -1,0 +1,177 @@
+--1. Visualizar la potencia de 5 elevado a 3.
+SELECT
+    power(5, 3)
+FROM
+    dual;
+--2. Visualizar la raiz cuadrada de 81.
+SELECT
+    sqrt(81)
+FROM
+    dual;
+--3. Visualizar la posicion ASCII de la letra M.
+SELECT
+    ascii('M')
+FROM
+    dual;
+--4. Visualizar el carater que le corresponde al ascii 65.
+SELECT
+    chr('65')
+FROM
+    dual;
+--5. Visualizar los codigos de departamento de todos los empleados (sin que se repitan).
+SELECT DISTINCT
+    department_id
+FROM
+    employee
+ORDER BY
+    department_id ASC;
+--6. Mostrar nombre y lo que cobra (salario + comisicion + 10% del salario).
+SELECT
+    first_name,
+    ( salary + nvl(commission, 0) + salary * 0.1 )
+FROM
+    employee;
+--7. Si la paga es mensual cuanto cobraria un trabajador con 14 pagas anuales incluida la comision.
+SELECT
+    first_name,
+    salary * 14 + nvl(commission, 0)
+FROM
+    employee;
+--8. Mostrar nombre de los empleados que perderían capital en caso de asignarles un 15% de salario adicional en vez de comision.
+SELECT
+    first_name,
+    salary * 1.15
+FROM
+    employee;
+/*9. Generar la siguiente salida 
+El tiempo
+----------------
+Hoy Esta Nublado
+*/
+SELECT
+    'El tiempo'
+    || ' ---------------- '
+    || 'Hoy Esta Nublado'
+FROM
+    dual;
+--10.visualizar la longitud tiene la cadena "hoy esta nublado"
+SELECT
+    length('Hoy esta Nublado')
+FROM
+    dual;
+--11.Visualizar los empleados que se llamen MILLER en minúsculas.
+SELECT DISTINCT
+    lower('MILLER')
+FROM
+    employee;
+--12.Visualizar salarios en longitud de 10 con el carácter del $ a la izquierda
+SELECT
+    first_name,
+    lpad(salary, 10, '$')
+FROM
+    employee;
+--13.Visualizar, de la tabla precios, la lista de precios en longitud 15 con el símbolo $ a la derecha
+SELECT
+    lpad('$' || list_price, 15)
+FROM
+    price;
+--14.Visualizar el nombre de los empleados cambiando las B por J.
+SELECT
+    translate(first_name, 'B', 'J')
+FROM
+    employee;
+--15.Visualizar los caracteres 3º y 4º de los nombres de los empleados
+SELECT
+    substr(first_name, 3, 2)
+FROM
+    employee;
+--16.Visualizar los caracteres 2 a 5 de los nombres de los productos de la tabla de productos
+SELECT
+    substr(description, 2, 3)
+FROM
+    product;
+--17.Visualiza el nombre y los apellidos de los empleados cuyos apellidos empiecen por la letra A. No utilizar LIKE.
+SELECT
+    first_name,
+    last_name
+FROM
+    employee
+WHERE
+    substr(last_name, 1, 1) = 'A';
+--18.Visualiza el nombre y los apellidos de los empleados cuyo nombre termine por E. No utilizar LIKE.
+SELECT
+    first_name,
+    last_name
+FROM
+    employee
+WHERE
+    substr(first_name, - 1, 1) = 'E';
+--19. Mostrar de la tabla empleados si aparece en el campo middle_initial A que se muestre Alto, y si aparece una M que se muestre mediano y si aparece otra cosa que ponga otros.
+SELECT
+    middle_initial,
+    decode(middle_initial, 'A', 'ALTO', 'M', 'MEDIANO',
+           middle_initial, 'OTROS')
+FROM
+    employee;
+--20.Sacar el puesto de trabajo en castellano de cada empleado, utilizando la función Decode.
+SELECT
+    first_name,
+    last_name,
+    decode(job_id, 667, 'EMPLEADO', 668, 'PERSONAL',
+           669, 'ANALISTA', 670, 'VENDEDOR', 671,
+           'GERENTE',
+           672,
+           'PRESIDENTE')
+FROM
+    employee;
+--21.Mostrar de la tabla Departamentos, si en el campo LOCATION_ID aparece 122, ponga new york, si aparece 123 ponga chicago, si aparece124 ponga dallas y si aparece 167 ponga boston.
+SELECT
+    department_id,
+    name,
+    decode(location_id, 122, 'New york', 123, 'Chicago',
+           124, 'Dallas', 167, 'Boston')
+FROM
+    department;
+--22.Visualizar los datos de los empleados cuyas iniciales en nombre y apellido sean consecutivas en el alfabeto.
+SELECT
+    *
+FROM
+    employee
+WHERE
+    ascii(first_name) + 1 = ascii(substr(first_name, 2, 1))
+    OR ascii(last_name) + 1 = ascii(substr(last_name, 2, 1));
+--23.Mostrar la última letra del nombre de los empleados.
+SELECT
+    substr(first_name, - 1, 1)
+FROM
+    employee;
+--24.Visualiza un listado con todos los empleados donde aparezca de cada uno de ellos: <NOMBRE> cobra anualmente <cantidad>
+SELECT
+    '<'
+    || lpad(first_name, 8)
+    || '> cobra anualmente <'
+    || salary
+    || '>'
+FROM
+    employee;
+--25.Visualiza un listado con los productos que están a la venta en la tabla precios. Debe aparecer: <cod_prod> es un producto a la venta y su precio es de <list_price>
+SELECT
+    '<'
+    || product_id
+    || '>  es un producto a la venta y su precio es de  <'
+    || list_price
+    || '>'
+FROM
+    price;
+--26.Quitar la primera A de los nombres de los empleados independientemente del lugar en el que se encuentren en el nombre.
+SELECT
+    first_name,
+    rtrim(first_name, 'A')
+FROM
+    employee;
+--27.Quitar la última S de los nombres de la tabla clientes independientemente del lugar en el que se encuentre en el nombre
+SELECT
+    first_name,
+    rtrim(first_name, 'S')
+FROM
+    employee;

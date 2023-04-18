@@ -1,0 +1,232 @@
+1.- Crear el TABLESPACE "jardineria" en ORACLE con el usuario SYS y con el script facilitado (ej_tablespaces_jardineria.sql), después desconectar de SYS y crear nueva conexión en SQLDEVELOPER con usuario: jardineria - password: jardineria , para finalizar conectar con usuario jardinería y ejecutar el script para crear las tablas e insertar los datos de la base de datos (jardineria_oracle.sql).
+
+
+2.- Crea una consulta para obtener un informe con el listado de pedidos gestionados por
+cada empleado(Nombre del Empleado, Nombre del Cliente, Código Cliente):
+
+
+SELECT
+
+    empleados.nombre,
+
+    clientes.nombrecliente,
+
+    pedidos.codigocliente,
+
+    pedidos.codigopedido
+
+FROM
+
+    clientes,
+
+    pedidos,
+
+    empleados
+
+WHERE
+
+        clientes.codigoempleadorepventas = empleados.codigoempleado
+
+    AND clientes.codigocliente = pedidos.codigocliente
+
+ORDER BY empleados.nombre;
+
+ 
+3.- Crea una consulta para obtener un informe con el número de pedidos que ha gestionado cada empleado:
+
+
+SELECT
+
+    empleados.nombre,
+
+    COUNT(pedidos.codigopedido) AS numeropedidos
+
+FROM
+
+    clientes,
+
+    pedidos,
+
+    empleados
+
+WHERE
+
+        clientes.codigoempleadorepventas = empleados.codigoempleado
+
+    AND clientes.codigocliente = pedidos.codigocliente
+
+GROUP BY
+
+    empleados.nombre
+
+order by numeropedidos;
+
+
+4.- Crea una consulta para obtener el Código de empleado, Nombre de empleado, Código de la oficina y ciudad, ordenada por el Código de Empleado:
+
+
+SELECT
+
+    empleados.codigoempleado,
+
+    empleados.nombre,
+
+    empleados.codigooficina,
+
+    oficinas.ciudad
+
+FROM
+
+    empleados,
+
+    oficinas
+
+WHERE
+
+    empleados.codigooficina = oficinas.codigooficina
+
+ORDER BY
+
+    empleados.codigoempleado;
+
+
+
+SELECT
+
+    empleados.codigoempleado,
+
+    empleados.nombre,
+
+    codigooficina,
+
+    oficinas.ciudad
+
+FROM
+
+         empleados
+
+    NATURAL JOIN oficinas
+
+ORDER BY
+
+    empleados.codigoempleado;
+
+
+5.- Crea una consulta que genere un informe de empleados donde junto a su nombre y apellidos aparezca el nombre y apellidos de su jefe.
+
+
+-- BIEN - CORRECTAS
+
+select CONCAT(emp.nombre,emp.apellido1) AS Empleado,
+
+CONCAT (jefe.nombre,jefe.apellido1) AS Jefe
+
+from Empleados emp, Empleados jefe
+
+where jefe.codigoempleado=emp.codigojefe
+
+order by Jefe;
+
+
+
+SELECT (emp.Nombre||' '||emp.Apellido1) AS Empleado,
+
+  (jefe.Nombre||' '||jefe.Apellido1) AS Jefe
+
+  FROM Empleados emp INNER JOIN Empleados jefe
+
+  ON jefe.codigoempleado=emp.codigojefe
+
+  order by Jefe;
+
+
+
+-- MAL - INCORRECTAS
+
+select CONCAT(emp.nombre,emp.apellido1) AS Empleado,
+
+CONCAT (jefe.nombre,jefe.apellido1) AS Jefe
+
+from Empleados emp, Empleados jefe
+
+where emp.codigoempleado=jefe.codigojefe
+
+order by Empleado;
+
+
+
+SELECT (emp.Nombre||' '||emp.Apellido1) AS Empleado,
+
+  (jefe.Nombre||' '||jefe.Apellido1) AS Jefe
+
+  FROM Empleados emp INNER JOIN Empleados jefe
+
+  ON emp.CodigoEmpleado=jefe.CodigoJefe
+
+  order by Empleado;
+
+ 
+6.- Crea una consulta que genere un informe que muestre las oficinas, la ciudad,
+el código de empleado y el nombre del empleados de las oficinas de la región "EMEA".
+
+
+select oficinas.codigooficina, oficinas.ciudad, empleados.codigoempleado, empleados.nombre
+
+from oficinas, empleados
+
+where oficinas.codigooficina=empleados.codigooficina 
+
+and oficinas.region='EMEA';
+
+
+
+select oficinas.codigooficina, ciudad, empleados.codigoempleado, empleados.nombre
+
+from oficinas INNER JOIN empleados ON oficinas.codigooficina=empleados.codigooficina 
+
+and oficinas.region='EMEA';
+
+
+7.- Igual que el anterior, pero mostrando las oficinas que no tienen empleados.
+
+(CORRECTO)
+
+select oficinas.codigooficina, ciudad, empleados.codigoempleado, empleados.nombre
+
+from oficinas LEFT JOIN empleados ON oficinas.codigooficina=empleados.codigooficina 
+
+and oficinas.region='EMEA';
+
+
+
+(REVISAR - ERROR)
+
+select oficinas.codigooficina, oficinas.ciudad, empleados.codigoempleado, empleados.nombre
+
+from oficinas, empleados
+
+where oficinas.codigooficina(+)=empleados.codigooficina 
+
+and oficinas.region='EMEA';
+
+
+8.- Listar los datos de cada uno de los empleados, la ciudad y región en donde trabaja.
+
+
+select empleados.*, oficinas.ciudad, oficinas.region
+
+from empleados, oficinas
+
+where empleados.codigooficina=oficinas.codigooficina;
+
+
+9.- Listar los pedidos mostrando su número, estado, nombre del cliente, y el límite
+de crédito del cliente correspondiente (todos los pedidos tienen cliente y representante).
+
+
+select pedidos.codigopedido, pedidos.estado, clientes.nombrecliente, clientes.limitecredito
+from pedidos, clientes, empleados
+
+where clientes.codigocliente=pedidos.codigocliente
+
+and clientes.codigoempleadorepventas=empleados.codigoempleado;

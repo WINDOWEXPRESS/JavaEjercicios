@@ -1,0 +1,90 @@
+1º. Cree una vista llamada MEJORES que contenga a los empleados que ganen más de 3000. Debe contener sólo el número del empleado, el salario, la comisión y el trabajo.
+CREATE VIEW MEJORES (id_emp, salario, comision, trabajo) AS
+SELECT employee_id, salary, commission, job_id
+FROM employee
+WHERE salalary > 3000);
+
+2º. Seleccione todos los datos utilizando la vista anterior, para su comprobación.
+SELECT *
+FROM MEJORES;
+
+3º. Crear una vista, que obtenga una estadística de los salarios medios, máximos y la suma de salarios por cada tipo de empleo, y que figure el nombre de su función.
+CREATE VIEW estadística ( funcion, salario_medio, salario_máximo, suma_de_salarios )  AS SELECT job.function, avg(employee.salary), max(employee.salary), sum(employee.salary) FROM employee, job WHERE employee.job_id=job.job_id GROUP BY job.function;
+
+4º. Presentar la vista del ejercicio 1 MEJORES, ordenada por sueldo descendente.
+SELECT *
+FROM MEJORES
+ORDER BY SALARIO;
+
+5º. Crear una vista llamada ventas que contenga a los CLIENTES( cod_cliente, fecha_pedido cod_pediod y cod_productos) que hicieron el pedido en febrero del 1989
+CREATE VIEW ventas(cod_cliente, fecha_pedido, cod_pedido, cod_producto) AS SELECT customer.customer_id, sales_order.order_date, item.order_id, item.product_id FROM CUSTOMER, SALES_ORDER, ITEM WHERE CUSTOMER.CUSTOMER_ID = SALES_ORDER.CUSTOMER_ID AND SALES_ORDER.ORDER_ID = ITEM.ORDER_ID AND TO_CHAR(ORDER_DATE,’YYYY-MM’) = ‘1989-02’;
+
+6º. Presentar la vista del ejercicio anterior
+SELECT *
+FROM ventas;
+
+7º. Crea una vista llamada trabajadores_dep que contenga cuantos trabajadores tiene cada departamento de cada localidad.
+CREATE VIEW trabajadores_dep(nombre_departamento, localidad, numero_trabajadores)
+AS SELECT department.name, location.regional_group, count(*)
+FROM employee, department, location
+WHERE employee.department_id=department.department_id
+AND department.location_id=location.location_id
+GROUP BY location.regional_group, department.name;
+
+8º. Presentar la vista del ejercicio anterior
+SELECT *
+FROM trabajadores_dep;
+
+9º. Crear una vista llamada dep23 que contenga a los trabajadores del departamento 23 que cobren comison. De ellos solo queremos saber el cod_empleado, salario, comision y departamento al que pertenecen.
+CREATE VIEW dep23(cod_empleado, salario, comision, departamento) As
+SELECT employee_id, salary, commission, department_id
+FROM employee
+WHERE department_id=23 AND commission is not null;
+
+10º. Presentar la vista del ejercicio anterior
+SELECT *
+FROM dep23;
+
+11º. Insertar los siguientes valores en la vista dep23 cod_empleado=1000, salario=785, comision =50, departamento=10.
+INSERT INTO dep23
+VALUES (1000,785,50,10);
+
+12º.- Comprobar que se ha actualizado la vista y la tabla employee
+SELECT *
+FROM dep23;
+
+SELECT *
+FROM employee;
+
+13º.Los empleados del departamento 23 con comision 1000 pasan a tener una comision 500. Actualizar la comision a traves de la vista.
+UPDATE dep23
+SET comision=500
+WHERE comision=1000;
+
+14º. Comprobar que se han actualizado dichos empleados en la tabla employee y en la vista.
+SELECT *
+FROM employee
+WHERE department_id=23 AND commission =1000;
+
+SELECT *
+FROM employee
+WHERE department_id=23 AND commission =500;
+
+SELECT *
+FROM dep23;
+
+15º. Borrar a los empleados del departamento 23 con comision 300 a traves de la vista.
+DELETE FROM customer
+WHERE salesperson_id IN (SELECT cod_empleado
+FROM dep23
+WHERE comision = 300);
+
+DELETE FROM dep23
+WHERE comision=300;
+
+16º. Consultar los datos de las vistas en el diccionario de datos
+SELECT *
+FROM user_views;
+
+17º borrar la vista MEJORES
+DROP VIEW mejores;

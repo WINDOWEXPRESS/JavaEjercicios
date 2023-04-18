@@ -1,0 +1,166 @@
+20.- ¿Cuántos clientes hay que sólo han realizado un pedido?
+
+SELECT COUNT(COUNT(*))
+FROM customer, sales_order
+WHERE customer.customer_id=sales_order.customer_id
+GROUP BY customer.customer_id
+HAVING COUNT(*)=1;
+
+21.- Muestra el nombre del cliente que realizo el pedido de mayor valor.
+
+SELECT customer.name
+FROM customer, sales_order
+WHERE customer.customer_id=sales_order.customer_id
+AND sales_order.total = (SELECT max(total)
+FROM sales_order);
+
+22.- Muestra el nombre del producto más caro.
+
+SELECT product.description
+FROM product, price
+WHERE product.product_id=price.product_id
+AND price.list_price = (SELECT max(list_price)
+FROM price);
+
+23.- Muestra el nombre del vendedor con más clientes.
+
+SELECT employee.first_name
+FROM employee, customer
+WHERE employee.employee_id=customer.salesperson_id
+GROUP BY employee.first_name
+HAVING COUNT(*)= (SELECT max(COUNT(*))
+FROM customer
+GROUP BY salesperson_id);
+
+24.- Muestra el nombre del departamento cuya suma de salarios de empleados es la mayor de todas las sumas.
+
+SELECT department.department_id,department.name
+FROM employee, department
+WHERE employee.department_id=department.department_id
+GROUP BY department.name, department.department_id
+HAVING sum(employee.salary)= (SELECT max(sum(salary))
+FROM employee
+GROUP BY department_id);
+
+25.- Muestra el nombre del cliente que ha realizado el mayor número de pedidos.
+
+SELECT customer.name
+FROM customer, sales_order
+WHERE customer.customer_id=sales_order.customer_id
+GROUP BY customer.name
+HAVING COUNT(*) = (SELECT max(COUNT(*))
+FROM sales_order
+GROUP BY customer_id );
+
+26.- Muestra el nombre del producto más vendido.
+
+SELECT distinct(product.description), sum(item.quantity)
+FROM product, item
+WHERE product.product_id=item.product_id
+GROUP BY product.description
+HAVING sum(item.quantity) = (SELECT max(sum(quantity))
+FROM item
+GROUP BY product_id);
+
+27.- ¿Qué cliente o clientes realizaron el primer pedido a la empresa?
+
+SELECT customer.name
+FROM customer, sales_order
+WHERE customer.customer_id = sales_order.customer_id
+AND sales_order.order_date = (SELECT min(order_date)
+FROM sales_order);
+
+28.- Muestra el nombre de cada cliente y el código del pedido (ORDER_ID) que, entre todos los pedidos realizados por el cliente, es el más caro (el de mayor valor en el campo TOTAL).
+
+SELECT customer.name, sales_order.order_id
+FROM customer, sales_order
+WHERE customer.customer_id=sales_order.customer_id
+AND sales_order.total = (SELECT max(s2.total)
+FROM sales_order s2
+WHERE sales_order.customer_id=s2.customer_id);
+
+29.- Muestra de cada cliente y sin repetidos, los códigos de los distintos productos que ha solicitado en sus pedidos.
+
+SELECT distinct(item.product_id)
+FROM customer, sales_order, item
+WHERE customer.customer_id=sales_order.customer_id
+AND sales_order.order_id=item.order_id;
+
+30.- Mostrar el nombre de cada empleado y nombre de la localidad donde trabaja.
+
+SELECT employee.first_name, location.regional_group
+FROM employee, department, location
+WHERE employee.department_id=department.department_id
+AND department.location_id=location.location_id;
+
+31.- Seleccionar para cada empleado el nombre, número, número de jefe, departamento y nombre del jefe. (AUTOCOMBINACIÓN)
+
+SELECT empleado.employee_id, empleado.first_name, jefe.employee_id,
+jefe.first_name, department.department_id, department.name
+FROM employee empleado, employee jefe, department
+WHERE empleado.manager_id=jefe.employee_id
+AND department.department_id=empleado.department_id;
+
+32.- Calcula cuántos empleados trabajan en el departamento de ventas (SALES) de CHICAGO.
+
+SELECT COUNT(*)
+FROM employee, department, location
+WHERE employee.department_id=department.department_id
+AND department.location_id=location.location_id
+AND department.name='SALES'
+AND location.regional_group='CHICAGO';
+
+33.- Muestra de cada departamento y de cada localidad, cuántos trabajadores tienen; muestra nombre de localidad, nombre de departamento y número de empleados.
+
+SELECT department.name, location.regional_group, COUNT(*)
+FROM employee, department, location
+WHERE employee.department_id=department.department_id
+AND department.location_id=location.location_id
+GROUP BY location.regional_group, department.name;
+
+34.- Muestra un listado con el nombre de los vendedores y la comisión que obtendrían si se les pagara un 25% del total facturado a sus clientes.
+
+SELECT employee.first_name, sum(sales_order.total)*0.25
+FROM employee, customer,sales_order
+WHERE employee.employee_id=customer.salesperson_id
+AND customer.customer_id=sales_order.customer_id
+GROUP BY employee.first_name;
+
+35.- Muestra un listado con el nombre de los vendedores y la comisión que obtendrían si se les pagara un 25% del total facturado a sus clientes. Para aquellos vendedores que no han vendido, se debe visualizar cero como comisión.
+
+SELECT employee.first_name, nvl(sum(sales_order.total)*0.25,0)
+FROM employee, customer,sales_order
+WHERE employee.employee_id=customer.salesperson_id AND
+customer.customer_id=sales_order.customer_id (+)
+GROUP BY employee.first_name;
+
+36.- Muestra de cada cliente y sin repetidos, los nombres de los productos que ha solicitado en sus pedidos.
+
+SELECT customer.name, (product.description)
+FROM customer, sales_order, item, product
+WHERE customer.customer_id=sales_order.customer_id
+AND sales_order.order_id=item.order_id
+AND item.product_id=product.product_id
+GROUP BY customer.name, product.description;
+
+37.- Muestra el nombre del cliente que ha comprado más de 100 unidades del producto ‘ACE TENNIS RACKET II’.
+
+SELECT customer.name
+FROM product, customer, item, sales_order
+WHERE customer.customer_id=sales_order.customer_id
+AND sales_order.order_id=item.order_id
+AND item.product_id=product.product_id
+AND product.description='ACE TENNIS RACKET II'
+GROUP BY customer.name
+HAVING sum(item.quantity)>100;
+
+38.- Muestra de cada departamento, su código, nombre, localidad y nombre del empleado más antiguo en ese departamento.
+
+SELECT department.department_id, department.name, location.regional_group, employee.first_name
+FROM employee, department, location
+WHERE employee.department_id=department.department_id
+AND department.location_id=location.location_id
+GROUP BY department.department_id, department.name, location.regional_group, employee.first_name
+HAVING (min(employee.hire_date),department.department_id) in (SELECT min(hire_date), department_id
+FROM employee
+GROUP BY department_id);

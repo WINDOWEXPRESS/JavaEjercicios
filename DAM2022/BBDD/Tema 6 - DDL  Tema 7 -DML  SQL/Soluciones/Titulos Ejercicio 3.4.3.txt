@@ -1,0 +1,43 @@
+3.4.3.1. 1. Realiza el diseño físico para el siguiente modelo relacional.
+Asigna el tipo de datos que consideres más adecuado.
+Realiza el diseño sin poner nombres a las restricciones.
+Esquema E01, contraseña “E01”.
+
+3.4.3.2. 2. Realiza el diseño físico para el siguiente modelo relacional.
+Asigna el tipo de datos que consideres más adecuado. Realiza el diseño sin poner nombres a las restricciones.
+Esquema E02, contraseña “E02”.
+
+3.4.3.3. 3. Realiza el diseño físico para el siguiente modelo relacional.
+Asigna el tipo de datos que consideres más adecuado. Realiza el diseño sin poner nombres a las restricciones.
+Esquema E03, contraseña “E03”.
+
+3.4.3.7. 7. Realiza el diseño físico para el siguiente modelo relacional.
+Asigna el tipo de datos que consideres más adecuado.
+Realiza el diseño poniendo nombres a las restricciones.
+Esquema E07, contraseña “E07”.
+No pueden ser nulos los siguientes campos: Nombre de Socio, Título de Película.
+Sexo toma los valores H o M. Por defecto si no se indica nada un actor o actriz no es Protagonista (este campo toma valores S o N).
+FechaDevolución debe ser mayor que FechaAlquiler.
+
+3.4.3.9. 9. Realiza el diseño físico para el siguiente modelo relacional.
+Asigna el tipo de datos que consideres más adecuado.
+Realiza el diseño sin poner nombres a las restricciones.
+Esquema E09, contraseña “E09”.
+Crea las tablas sin restricciones y añádelas después con el comando ALTER TABLE.
+Crea índices para los siguientes campos: Nombre de Sucursal, Nombre de Cliente. También para Localidad de Cliente, Localidad de Sucursal. Crea una secuencia que inicie en 1 para CodSucursal.
+
+3.4.3.11. 11. Realiza el diseño físico para el siguiente modelo relacional.
+Asigna el tipo de datos que consideres más adecuado.
+Realiza el diseño sin poner nombres a las restricciones.
+Esquema E11, contraseña “E11”.
+Crea las tablas sin restricciones y añádelas después con el comando ALTER TABLE.
+Crea índices para los siguientes campos: Nombre de Cliente, Nombre de Categoría, Nombre de Proveedor, Ciudad de Cliente.
+Crea una secuencia para IDVenta.
+
+3.4.3.12. 12. Realiza el diseño físico para el siguiente modelo relacional.
+Asigna el tipo de datos que consideres más adecuado.
+Realiza el diseño sin poner nombres a las restricciones.
+Esquema E12, contraseña “E12”.
+Crea las tablas sin restricciones y añádelas después con el comando ALTER TABLE.
+Crea índices para los siguientes campos: Apellidos de Empleado, Lugar de Edición, Horario de Edición.
+Para el indicar si un prerrequisito es obligatorio o no utilizamos ‘S’ o ‘N’.

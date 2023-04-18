@@ -1,0 +1,26 @@
+1º. Asigne el permiso para modificar la definicion de la tabla TIENDAS al usuario DAI2TYY.
+GRANT ALTER ON TIENDAS TO DAI2TYY;
+
+2º. Asigne el permiso para modificar filas de la columna ORDER_DATE de la tabla SALES_ORDER al usuario DAI2TYY.
+GRANT UPDATE (ORDER_DATE) ON SALES_ORDER TO DAI2TYY;
+
+3º. Asigne el permiso para modificar filas de todas las columnas de la tablaITEM al usuario DAI2TYY.
+GRANT UPDATE ON ITEM TO DAI2TYY;
+
+4º. Elimina el permiso de modificar filas de todas las columnas de la tabla ITEM al usuario DAI2TYY.
+REVOKE UPDATE ON ITEM FROM DAI2TYY;
+
+5º. Crea al usuario Maria con pasword maria.
+CREATE USER MARIA IDENTIFIED BY MARIA DEFAULT TABLESPACE USERS;
+
+6º. Asignale al usuario maria la posibilidad de conectarse a la base de datos.
+GRANT CONNECT TO MARIA IDENTIFIED BY MARIA;
+
+7º. Asignarle al usuario maria la posibilidad de crear tablas.
+GRANT RESOURCE TO MARIA IDENTIFIED BY MARIA;
+
+8º. Quitar el derecho de conexión a la base de datos al usuario maria.
+REVOKE CONNECT FROM MARIA;
+
+9º. Borrar al usuario maria.
+DROP USER MARIA;

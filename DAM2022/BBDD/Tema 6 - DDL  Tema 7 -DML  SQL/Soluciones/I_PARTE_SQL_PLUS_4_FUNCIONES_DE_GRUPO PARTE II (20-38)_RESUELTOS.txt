@@ -1,0 +1,189 @@
+20.  Visualizar el nº de empleados  del departamento 13 cuya función es 670
+
+select department_id, count(*)
+from employee
+where department_id=13 and job_id=670
+group by department_id;
+
+select count(*)
+from employee
+where department_id=13 and job_id=670;
+
+21.-  visualizar la maxima comision asignada a las funciones de trabajo 669 y 670 por departamento.
+
+select department_id, max(commission)
+from employee
+where job_id=669 or job_id=670
+group by department_id;
+
+-- ordenados
+select department_id, max(commission)
+from employee
+where job_id=669 or job_id=670
+group by department_id
+order by department_id;
+
+22.  Código de departamento donde la media sea superior de 2000.
+
+select department_id
+from employee
+group by department_id
+having avg(salary)> 2000;
+
+-- ordenados
+select department_id
+from employee
+group by department_id
+having avg(salary)> 2000
+order by department_id;
+
+23. Código de departamento y media salarial de los departamentos con mas de 2 empleados.
+
+select department_id, round(avg(salary))
+from employee
+group by department_id
+having count(*)>2;  ----> si en vez de * pongo department_id tb funciona.
+
+-- con department_id
+select department_id, round(avg(salary))
+from employee
+group by department_id
+having count(department_id)>2;
+
+-- ordenados
+select department_id, round(avg(salary))
+from employee
+group by department_id
+having count(department_id)>2
+order by department_id;
+
+24. Muestra el código de los productos que protagonicen al menos 5 líneas de compra (5 filas en ITEM).
+
+select product_id
+from item
+group by product_id
+having count(*) >=5;
+
+select product_id, count(*)
+from item
+group by product_id
+having count(*) >=5;
+
+select product_id, count(*)
+from item
+group by product_id
+having count(*) >=5
+order by count(*);
+
+25. Visualizar los departamentos en los que el salario medio es mayor o igual que 2400$
+
+select department_id, round(avg(salary))
+from employee
+group by department_id
+having avg(salary)>=2400;
+
+select department_id, round(avg(salary))
+from employee
+group by department_id
+having avg(salary)>=2400
+order by department_id;
+
+26. Códigos de departamento que tienen a empleados desarrollando la misma función.
+
+select department_id
+from employee
+group by department_id, job_id
+having count(*)>=2;
+
+select department_id, job_id, count(*)
+from employee
+group by department_id, job_id
+having count(*)>=2;
+
+select department_id, job_id, count(*)
+from employee
+group by department_id, job_id
+having count(*)>=2
+order by department_id;
+
+27. Visualizar el sueldo de los empleados que menos cobran en su departamento dependiendo de su funcion si y solo si es inferior a 1200$
+
+select department_id, job_id, min(salary)
+from employee
+group by department_id, job_id
+having min(salary)<1200;
+
+28. Muestra el código de los productos cuya diferencia entre los precios anteriores (el menor y el mayor) sea superior a la unidad.
+
+select product_id, max(list_price), min(list_price), max(list_price) - min (list_price)
+from price
+group by product_id
+having ( max(list_price) - min (list_price))>1;
+
+29. Muestra los códigos de departamentos que tienen más de 2 empleados que cobren comisión.
+
+select department_id
+from employee
+where commission is not null
+group by department_id
+having count(department_id) > 2;
+
+30. Visualizar el valor del pedido medio por cliente salvo el del cliente 202 siempre que los pedidos hayan superado los 500$
+
+select customer_id, avg(total)
+from sales_order
+where customer_id != 202
+group by customer_id
+having sum(total)>500;
+
+31. De los empleados mas antiguos de cada departamento visualizar cuantos hay que ganen mas de 3000$
+
+select department_id, count(*), min(hire_date)
+from employee
+where salary>3000
+group by department_id;
+
+32. Visualizar la media de lo que ganan los empleados de los departamentos, salvo el 13, y cuyas funciones sean cuales quiera salvo la 669 y 670, siempre que la media de lo que ganen sea superior a 1900$
+
+select department_id, avg(salary)
+from employee
+where department_id !=13 and (job_id !=669 and job_id !=670)
+group by department_id
+having avg(salary)>1900;
+
+33. ¿Cuántos empleados tiene el departamento que menos empleados tiene?
+
+select min(count(*))
+from employee
+group by department_id;
+
+34. ¿Cuánto dinero ha gastado el cliente que más ha gastado?
+
+select max(sum(total))
+from sales_order
+group by customer_id;
+
+35. ¿Cuántas unidades se han vendido del producto más vendido?
+
+select max(sum(quantity))
+from item
+group by product_id;
+
+36. Cual es el sueldo menor de los tipos de trabajo
+
+select min(min(salary))
+from employee
+group by job_id;
+
+37. Cual es el sueldo mayor de los departamentos
+
+select max(max(salary))
+from employee
+group by department_id;
+
+38. ¿ Cuantos empleados tiene el departamento que mas empleados tiene, realizando la funcion 670?
+
+select max(count(*))
+from employee
+where job_id=670
+group by department_id;

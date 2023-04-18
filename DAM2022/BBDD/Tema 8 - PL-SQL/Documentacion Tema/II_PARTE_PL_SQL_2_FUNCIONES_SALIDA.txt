@@ -1,0 +1,240 @@
+
+----------------------------------------------Ejercicio 1----------------------------------------
+Nuevo:DECLARE
+    letra  CHAR(1);
+BEGIN
+    letra := 'D';
+
+    dbms_output.put_line('la letra introducido es '
+                         || letra
+                         || ' su número ASCII es '
+                         || ASCII(letra));
+
+END;
+la letra introducido es D su número ASCII es 68
+----------------------------------------------Ejercicio 2----------------------------------------
+Nuevo:DECLARE
+    CAT1  REAL(3);
+     CAT2  REAL(3);
+BEGIN
+    CAT1 := '1';
+    CAT2 := '2';
+    Cat1 := power(cat1,2);
+    Cat2 := power(cat2,2);
+    dbms_output.put_line('Su hipotenusa es  '
+                         || trunc(sqrt(cat1+cat2),3));
+
+END;
+Su hipotenusa es  2,236
+----------------------------------------------Ejercicio 3----------------------------------------
+a 
+b 
+c 
+d 
+e 
+f 
+g 
+h 
+i 
+j 
+k 
+l 
+m 
+n 
+o 
+p 
+q 
+r 
+s 
+t 
+u 
+v 
+w 
+x 
+y 
+z 
+{ 
+
+Procedimiento PL/SQL terminado correctamente.
+----------------------------------------------Ejercicio 4----------------------------------------
+Nuevo:DECLARE
+    palabra VARCHAR2(20);
+BEGIN
+    palabra := 'HOLA';
+    FOR i IN 1..length(palabra) LOOP
+        dbms_output.put_line(substr(palabra, i, 1));
+    END LOOP;
+
+END;
+H
+O
+L
+A
+----------------------------------------------Ejercicio 5----------------------------------------
+Nuevo:DECLARE
+    palabra       VARCHAR2(20);
+    longitud      REAL(2);
+    i             REAL := 1;
+    ispalindromo  BOOLEAN := true;
+BEGIN
+    palabra := 'HOLA';
+    longitud := length(palabra);
+    WHILE
+        i < longitud
+        AND ispalindromo
+    LOOP
+        IF ascii(substr(palabra, i, 1)) != ascii(substr(palabra, longitud, 1)) THEN
+            dbms_output.put_line('La palabra no es palindromo.');
+            ispalindromo := false;
+            EXIT;
+        END IF;
+
+        longitud := longitud - 1;
+        i := i + 1;
+    END LOOP;
+
+    IF ispalindromo THEN
+        dbms_output.put_line('La palabra es palindromo.');
+    END IF;
+END;
+La palabra no es palindromo.
+
+Procedimiento PL/SQL terminado correctamente.
+
+----------------------------------------------Ejercicio 6----------------------------------------
+Nuevo:DECLARE
+    num1       REAL :='1';
+    num2       REAL :='2';
+    num3       REAL :='3';
+BEGIN
+    IF num1>num2 and num1>num3 THEN
+        dbms_output.put_line('el mayor numero introducido es : '|| num1);
+        elsif num2>num1 and num2>num3 THEN
+        dbms_output.put_line('el mayor numero introducido es : '|| num2);
+        else
+        dbms_output.put_line('el mayor numero introducido es : '|| num3);
+    END IF;
+END;
+el mayor numero introducido es : 3
+----------------------------------------------Ejercicio 7----------------------------------------
+Eres jefe de un empleado,aumenta 50e en el salario: 3050
+Procedimiento PL/SQL terminado correctamente.
+----------------------------------------------Ejercicio 8----------------------------------------
+Nuevo:DECLARE
+    nombre_empleado   employee.last_name%TYPE := upper('sarah');
+    id_departamiento  employee.department_id%TYPE;
+BEGIN
+    SELECT
+        department_id
+    INTO id_departamiento
+    FROM
+        employee
+    WHERE
+        first_name = nombre_empleado;
+    IF id_departamiento = 13 THEN
+        UPDATE employee
+        SET
+            commission = (
+                SELECT
+                    AVG(nvl(commission, 0))
+                FROM
+                    employee
+                WHERE
+                    department_id = 13
+                GROUP BY
+                    department_id
+            )
+        WHERE
+                department_id = 13
+            AND first_name = nombre_empleado;
+
+    ELSIF id_departamiento = 14 THEN
+        UPDATE employee
+        SET
+            commission = (
+                SELECT
+                    MIN(nvl(commission, 0))
+                FROM
+                    employee
+                WHERE
+                    department_id = 14
+                GROUP BY
+                    department_id
+            )
+        WHERE
+                department_id = 14
+            AND first_name = nombre_empleado;
+
+    ELSIF id_departamiento = 23 THEN
+        UPDATE employee
+        SET
+            commission = (
+                SELECT
+                    MAX(commission)
+                FROM
+                    employee
+                WHERE
+                    department_id = 23
+                GROUP BY
+                    department_id
+            )
+        WHERE
+                department_id = 23
+            AND first_name = nombre_empleado;
+
+    ELSIF id_departamiento = 10 THEN
+        UPDATE employee
+        SET
+            commission = (
+                SELECT
+                    MIN(salary)
+                FROM
+                    employee
+                WHERE
+                    department_id = 10
+                GROUP BY
+                    department_id
+            )
+        WHERE
+                department_id = 10
+            AND first_name = nombre_empleado;
+
+    ELSIF id_departamiento = 12 THEN
+        UPDATE employee
+        SET
+            commission = (
+                SELECT
+                    MAX(commission)
+                FROM
+                    employee
+                WHERE
+                    department_id = 12
+                GROUP BY
+                    department_id
+            )
+        WHERE
+                department_id = 12
+            AND first_name = nombre_empleado;
+
+    ELSE
+        UPDATE employee
+        SET
+            commission = (
+                SELECT
+                    AVG(salary)
+                FROM
+                    employee
+                WHERE
+                    department_id = id_departamiento
+                GROUP BY
+                    department_id
+            )
+        WHERE
+                department_id = id_departamiento
+            AND first_name = nombre_empleado;
+
+    END IF;
+END;
+Procedimiento PL/SQL terminado correctamente.
+----------------------------------------------Ejercicio 9----------------------------------------
+View SALARIOS_CAROS creado.

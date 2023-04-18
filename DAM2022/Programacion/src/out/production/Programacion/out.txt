@@ -1,0 +1,71 @@
+D:\JAVA\bin\java.exe "-javaagent:D:\IntelliJ IDEA Community Edition 2022.3\lib\idea_rt.jar=52144:D:\IntelliJ IDEA Community Edition 2022.3\bin" -Dfile.encoding=UTF-8 -classpath I:\DAM2022\Programacion\src\programacion\out\production\programacion MainEmpresaAlquilerVehiculos
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (0):
+=====> Clientes (0):
+=====> Alquileres (0):
+
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (0):
+=====> Clientes (1):
+1) 12345678F Fernando Campos (666 666 666, fcamposdelpozo@educa.madrid.org)
+=====> Alquileres (0):
+
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (0):
+=====> Clientes (2):
+1) 12345678F Fernando Campos (666 666 666, fcamposdelpozo@educa.madrid.org)
+2) 98765432K Alan Turing (+44 76589345, aturing@educa.madrid.org)
+=====> Alquileres (0):
+
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (1):
+1)  1234MBC Seat-Ibiza      30.00€/día (3 puertas, cambio manual) 
+=====> Clientes (2):
+1) 12345678F Fernando Campos (666 666 666, fcamposdelpozo@educa.madrid.org)
+2) 98765432K Alan Turing (+44 76589345, aturing@educa.madrid.org)
+=====> Alquileres (0):
+
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (2):
+1)  1234MBC Seat-Ibiza      30.00€/día (3 puertas, cambio manual) 
+2)     1123 Kia-Ceed        40.00€/día (5 puertas, cambio automático) 
+=====> Clientes (2):
+1) 12345678F Fernando Campos (666 666 666, fcamposdelpozo@educa.madrid.org)
+2) 98765432K Alan Turing (+44 76589345, aturing@educa.madrid.org)
+=====> Alquileres (0):
+
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (2):
+1)  1234MBC Seat-Ibiza      30.00€/día (3 puertas, cambio manual) 
+2)     1123 Kia-Ceed        40.00€/día (5 puertas, cambio automático) 
+=====> Clientes (2):
+1) 12345678F Fernando Campos (666 666 666, fcamposdelpozo@educa.madrid.org)
+2) 98765432K Alan Turing (+44 76589345, aturing@educa.madrid.org)
+=====> Alquileres (1):
+1) 1234MBC/Seat-Ibiza -> 12345678F/Fernando Campos (EN CURSO) 
+
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (2):
+1)  1234MBC Seat-Ibiza      30.00€/día (3 puertas, cambio manual) 
+2)     1123 Kia-Ceed        40.00€/día (5 puertas, cambio automático) 
+=====> Clientes (2):
+1) 12345678F Fernando Campos (666 666 666, fcamposdelpozo@educa.madrid.org)
+2) 98765432K Alan Turing (+44 76589345, aturing@educa.madrid.org)
+=====> Alquileres (2):
+1) 1234MBC/Seat-Ibiza -> 12345678F/Fernando Campos (EN CURSO) 
+2) 1123/Kia-Ceed -> 98765432K/Alan Turing (EN CURSO) 
+
+########## Empresa Alquiler de Vehículos 'Sixt rent a car S.L.U.' (B07947591) ##########
+=====> Vehiculos (2):
+1)  1234MBC Seat-Ibiza      30.00€/día (3 puertas, cambio manual) 
+2)     1123 Kia-Ceed        40.00€/día (5 puertas, cambio automático) 
+=====> Clientes (2):
+1) 12345678F Fernando Campos (666 666 666, fcamposdelpozo@educa.madrid.org)
+2) 98765432K Alan Turing (+44 76589345, aturing@educa.madrid.org)
+=====> Alquileres (2):
+1) 1234MBC/Seat-Ibiza -> 12345678F/Fernando Campos (FINALIZADO) Coste total es : 30.0 e
+2) 1123/Kia-Ceed -> 98765432K/Alan Turing (EN CURSO) 
+
+
+进程已结束,退出代码0

@@ -1,0 +1,144 @@
+-- 1.- Potencia de 5 elevado a 3.
+SELECT power(5,3)
+FROM dual;
+
+-- 2.- Raiz cuadrada de 81.
+SELECT sqrt(81)
+FROM dual;
+
+-- 3.- Posición ASCII de la letra M.
+SELECT ascii ('M')
+FROM dual;
+
+-- 4.- El carácter que le corresponde al ascii 65.
+SELECT chr(65)
+FROM dual;
+
+-- 5.- Visualizar los códigos de departamento de todos los empleados (sin que se repitan).
+SELECT distinct department_id
+FROM employee;
+
+-- 6.- Mostrar nombre y lo que cobra (salario + comisión + 10% del salario).
+SELECT first_name, round(salary+nvl(commission,0)+salary*0.1)"Cobra"
+FROM employee;
+
+-- 7.- Si la paga es mensual cuanto cobraría un trabajador con 14 pagas anuales incluida la
+-- comisión.
+SELECT first_name, round(salary*14 + nvl((commission*14),0))"Salario Anual"
+FROM employee;
+
+-- 8.- Mostrar nombre de los empleados que perderían capital en caso de asignarles un
+-- 15% de salario adicional en vez de comisión.
+SELECT first_name, salary, salary*1.15, salary+commission
+FROM employee
+WHERE round(salary*0.15)<commission;
+
+-- 9.- Generar la siguiente salida
+SELECT initcap('HOY ESTA NUBLADO')" El tiempo"
+FROM dual;
+
+-- 10.- ¿Qué longitud tiene la cadena “Hoy esta Nublado”
+SELECT length('Hoy esta nublado')
+FROM dual;
+
+-- 11.- Seleccionar los que se llamen MILLER en mayúsculas.
+SELECT *
+FROM employee
+WHERE upper(last_name)='MILLER';
+
+-- 12.- Visualizar salarios en longitud de 10 con el carácter del $ a la izquierda
+SELECT first_name,lpad(salary,10,'$')
+FROM employee;
+
+-- 13.- De la tabla precios, visualizar la lista de precios en longitud 15 con el simbolo $ a
+-- la derecha
+SELECT list_price, rpad(list_price, 15,’$’)
+FROM price;
+
+-- 14.- Visualizar el nombre de los empleados cambiando las B por J. Cambiar las B por J.
+SELECT first_name, translate(first_name,'B','J')
+FROM employee;
+
+-- 15.- Extraer los caracteres 3º y 4º de los nombres
+SELECT first_name, substr(first_name,3,2)
+FROM employee;
+
+-- 16.- Extraer los caracteres 2 a 5 de los nombres de los productos de la tabla de
+-- productos
+SELECT description, substr(description,2,4)
+FROM product;
+
+-- 17.- visualiza los empleados cuyos apellidos empiecen por la letra A
+SELECT first_name, last_name
+FROM employee
+WHERE(substr(last_name,1,1))=’A’;
+
+-- 18.- Visualiza los empleados cuyo nombre termine por E
+SELECT first_name, last_name
+FROM employee
+WHERE substr(first_name, length(first_name), 1)=’E’;
+
+-- 19.- Mostrar de la tabla empleados si aparece middle_initial A que se muestre Alto, y si
+-- aparece una M que se muestre mediano y si aparece otra cosa que ponga otros.
+SELECT first_name, decode(middle_initial,'A','Alto','M','Medio','Otros')
+FROM employee;
+
+-- 20.- Sacar el puesto de trabajo de cada empleado, utilizando la función decode.
+SELECT first_name, decode(job_id, 667, 'Administrativo', 668, 'Operario',
+669, 'Analista', 670, 'Vendedor', 671,'Representante', 672,'Presidente')
+FROM employee;
+
+-- 21.- Mostrar de la tabla Departamentos, si en el campo LOCATION_ID si aparece 122,
+-- ponga new york, si aparece 123 ponga chicago, si aparece124 ponga dallas y si aparece
+-- 167 ponga boston.
+SELECT location_id, decode(location_id,122,‘new york’,123,’chicago’,124,’dallas’, 167,’boston’)
+FROM department;
+
+-- 22.- Visualizar los datos de los empleados cuyas iniciales en nombre y apellido sean
+-- consecutivas en el alfabeto.
+SELECT first_name, last_name
+FROM employee
+WHERE ascii(last_name)=ascii(first_name)-1;
+
+SELECT last_name, first_name
+FROM employee
+WHERE ascii(first_name)=ascii(last_name)-1;
+
+-- 23.- Mostrar la última letra del nombre de los empleados.
+SELECT first_name, substr(first_name,length(first_name),1)
+FROM employee;
+
+SELECT first_name, substr(first_name,length(first_name))
+FROM employee;
+
+-- 24.- Visualiza un listado con todos los empleados donde aparezca de cada uno de ellos:
+-- <NOMBRE> cobra anualmente <cantidad>
+SELECT first_name || ' cobra anualmente ' || (salary * 12)
+FROM employee;
+
+-- FIRST_NAME||'COBRAANUALMENTE'||(SALARY*12)
+-- --------------------------------------------------------------------
+-- JOHN cobra anualmente 9600
+-- KEVIN cobra anualmente 19200
+
+-- 25.- Visualiza un listado con los productos que estan a la venta en la tabla precios.
+-- Debe aparecer:
+-- <cod_prod> es un producto a la venta y su precio es de <list_price>
+SELECT product_id ||’ es un producto a la venta y su precio es de ’||list_price
+FROM price
+WHERE END_DATE IS NULL;
+
+SELECT CONCAT (product_id, CONCAT(' es un producto a la venta y su precio es de ', list_price))
+FROM price
+WHERE END_DATE IS NULL;
+
+-- 26. Quitar la primera A de los nombres de los empleados independientemente del
+-- lugar en el que se encuentren en el nombre.
+SELECT first_name, substr(first_name, 1, instr(first_name, 'A')-1) ||
+substr(first_name,instr(first_name, 'A')+1)
+FROM employee;
+
+-- 27.- Quitar la ultima S de los nombres de la tabla clientes independientemente del
+-- lugar en el que se encuentre en el nombre
+SELECT name, substr(name,1,(instr(name, 'S',-1)-1)) || substr(name,(instr(name, 'S',-1)+1))
+FROM customer;

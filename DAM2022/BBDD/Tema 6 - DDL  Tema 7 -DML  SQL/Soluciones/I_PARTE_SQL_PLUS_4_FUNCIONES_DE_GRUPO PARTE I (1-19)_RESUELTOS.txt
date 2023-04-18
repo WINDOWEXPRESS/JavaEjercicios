@@ -1,0 +1,170 @@
+1. Visualizar el salario medio de los empleados
+
+select avg(salary)
+from employee;
+
+2. Visualizar cuantos salarios hay y cuántos de ellos son distintos
+
+select count(salary),count(distinct salary)
+from employee;
+
+3.   Diferencia entre el salario máximo y el salario mínimo.
+
+select max(salary) - min(salary)
+from employee;
+
+4.  Hallar el valor medio de la comisión.
+
+select avg(commission)
+from employee;
+
+5.  Hallar el valor medio de comisión teniendo en cuenta todos los empleados.
+
+-- teniendo en cuenta a todos los empleados
+select avg(nvl(commission, 0))
+from employee;
+
+-- otra opción alternativa sin usar avg y usando count
+select sum(nvl(commission, 0))/count(*)
+from employee;
+
+6. ¿Cuál es el total medio de pedidos?
+
+select round(avg(total))
+from sales_order;
+
+7.  Muestra la media aritmética del valor de "límite de crédito" asignado a los clientes de la empresa (CREDIT_LIMIT)
+
+select avg(credit_limit)
+from customer;
+
+8. ¿Cuánto cobra el empleado que más cobra? (salario + comisión)
+
+select max(salary + nvl(commission,0))
+from employee;
+
+9. Media del salario más comisión,  de los empleados que trabajan en los departamentos de la decena 20.
+
+select round(avg(salary+nvl(commission,0)))"Sueldo medio"
+from employee
+where department_id>19 and department_id<30;
+
+select round(avg(salary+nvl(commission,0)))"Sueldo medio"
+from employee
+where department_id IN (20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
+
+10. Busca el límite de crédito máximo que corresponde a los clientes que representa el vendedor de código 7499.
+
+select max(credit_limit)
+from customer
+where salesperson_id = 7499;
+
+select max(credit_limit) "Limite de Crédito"
+from customer
+where salesperson_id = 7499;
+
+11. Nº de empleados cuyo apellido empieza por 'C'
+
+select count(last_name)
+from employee
+where last_name like 'C%';
+
+12. Visualizar la maxima comision asignada a las funciones de trabajo 669 y 670.
+
+select  max(commission)
+from employee
+where job_id=669 or job_id=670;
+
+select  max(commission)
+from employee
+where job_id IN(669, 670);
+
+13. La media de los salarios de la tabla empleados pero si utilizo un criterio de agrupación por código de departamento.
+
+select round(avg(salary))
+from employee
+group by department_id;
+
+14. El de antes pero con el código de departamento, porque con el group by tiene ya criterios de agrupación.
+
+select department_id, round(avg(salary))
+from employee
+group by department_id;
+
+-- ordenados
+select department_id, round(avg(salary))
+from employee
+group by department_id
+order by department_id;
+
+15.  Contabilizar por cada departamento cuantos empleados hay con el mismo salario.
+
+select department_id, salary, count(*)
+from employee
+group by department_id, salary;
+
+-- ordenados
+select department_id, salary, count(*)
+from employee
+group by department_id, salary
+order by department_id, salary;
+
+16.  Muestra de cada producto, su código, el menor precio que ha tenido (LIST_PRICE) y el mayor precio que ha tenido (LIST_PRICE) de todos los precios que hay en la tabla PRICE.
+
+select product_id, min(list_price), max(list_price)
+from price
+group by product_id;
+
+-- ordenados por precios max
+select product_id, min(list_price), max(list_price)
+from price
+group by product_id
+order by max(list_price) desc;
+
+17.  De cada departamento, código, media salarial, número de empleados que aparecen en la media teniendo en cuenta solo los que no cobran comisión.
+
+select department_id, avg(salary), count(*)
+from employee
+where commission is null
+group by department_id;
+
+-- ordenados por departamento
+select department_id, round(avg(salary)), count(*)
+from employee
+where commission is null
+group by department_id
+order by department_id;
+
+18. ¿Cuántos departamentos de ventas(SALES) hay en la empresa?
+
+select name, count(name)
+from department
+where name='SALES'
+group by name;
+
+19. Muestra de cada departamento, su código y el número de empleados que tienen un salario (SALARY) superior a 2000.
+
+select department_id, count(*)
+from employee
+where salary > 2000
+group by department_id;
+
+-- ordenados
+select department_id, count(*)
+from employee
+where salary > 2000
+group by department_id
+order by department_id;
+
+-- con clausula HAVING
+SELECT DEPARTMENT_ID, COUNT(*), SALARY
+FROM EMPLOYEE
+GROUP BY DEPARTMENT_ID, SALARY
+HAVING SALARY > 2000
+ORDER BY DEPARTMENT_ID;
+
+select department_id, count(*), salary
+from employee
+where salary > 2000
+group by department_id, salary
+order by department_id;
