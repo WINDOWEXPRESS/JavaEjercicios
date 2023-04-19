@@ -1,5 +1,6 @@
 package trabajogeneral.tema11.p2;
 
+import java.io.File;
 import java.time.LocalDate;
 
 public abstract class AbstractProducto {
@@ -16,6 +17,7 @@ public abstract class AbstractProducto {
         this.fechaEnvasada = fechaEnvasada;
         this.paisOrigen = paisOrigen;
     }
+
 
     @Override
     public String toString() {

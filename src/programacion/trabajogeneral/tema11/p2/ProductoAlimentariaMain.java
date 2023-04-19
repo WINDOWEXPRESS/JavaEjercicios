@@ -33,10 +33,14 @@ public class ProductoAlimentariaMain {
             Menu(nombreEmpresa);
             opcion = dato.nextInt();
             dato.nextLine();
+            Fresco fresco = new Fresco("Fresa", 1,LocalDate.of(2023, 11, 11), LocalDate.now(), "ES");
+            listadoProductoFresco.add (fresco) ;
+            listadoProductoFresco.add( new Fresco("Pera", 2, LocalDate.of(2023, 11, 11),  LocalDate.now(), "FR"));
+            fresco.crearFicheroCsv("listadoProductoFresco");
             switch (opcion) {
                 case 1 :
                     // Definir instancia de las clases
-                    Fresco fresco;
+                    //Fresco fresco;
                     System.out.println("Has seleccionado introducir un producto fresco.");
                     capturarDatosComunes();
                     fresco = new Fresco(nombre, numeroDeLote, fechaEnvasado, LocalDate.now(), paisDeOrigen);
