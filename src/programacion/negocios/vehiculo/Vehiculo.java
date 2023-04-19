@@ -1,3 +1,5 @@
+package negocios.vehiculo;
+
 
 public class Vehiculo {
 	//Atributos

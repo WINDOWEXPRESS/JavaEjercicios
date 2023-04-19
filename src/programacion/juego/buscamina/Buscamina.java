@@ -34,6 +34,7 @@ public class Buscamina {
 			}
 			
 		} while(!salirPrograma);
+		dato.close();
 	}
 	
 	public static void Menu() {

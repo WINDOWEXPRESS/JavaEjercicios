@@ -33,6 +33,7 @@ public class Main {
         if (administrador.salarioMaximo((float) Vecino.getCuota()) < administrador.getSalario()) {
             administrador.setSalario((float) administrador.salarioMaximo((float) Vecino.getCuota()));
         }
+        dato.close();
         System.out.println(administrador);
     }
 }

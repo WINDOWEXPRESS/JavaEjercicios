@@ -72,7 +72,7 @@ public class Pizzeria {
 
 	public String pedidosToString() {
 		String regPedido = "Pedidos realizados="+getNumPedidos()+"(max="+getMaxPedidos()+")"+"\n";
-		return "";
+		return regPedido;
 	}
 
 	public String clienteToString(int posicionCliente) {

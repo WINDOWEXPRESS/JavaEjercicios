@@ -12,28 +12,29 @@ public class ProductoAlimentariaMain {
     static ArrayList<CongeladoAire> listadoProductoCongeladoAire = new ArrayList<>();
     static ArrayList<CongeladoAgua> listadoProductoCongeladoAgua = new ArrayList<>();
     static ArrayList<CongeladoNitro> listadoProductoCongeladoNitro = new ArrayList<>();
-    //Pensando con numero de lote de cada producto es unico entonces se guarda en un set
+    // Pensando con numero de lote de cada producto es unico entonces se guarda en
+    // un set
     static Set<Integer> listadoNumeroLote = new HashSet<>();
-    static String nombreEmpresa;
     static String nombre;
     static int numeroDeLote;
     static String fecha;
     static LocalDate fechaDeCaducidad;
     static LocalDate fechaEnvasado;
     static String paisDeOrigen;
-    //Instanciar la clase Scanner
+    // Instanciar la clase Scanner
     static Scanner dato = new Scanner(System.in);
 
     public static void main(String[] args) {
+        String nombreEmpresa;
         System.out.print("Nombre de la empresa:");
         nombreEmpresa = dato.nextLine();
         int opcion;
         do {
-            Menu();
+            Menu(nombreEmpresa);
             opcion = dato.nextInt();
             dato.nextLine();
             switch (opcion) {
-                case 1 -> {
+                case 1 :
                     // Definir instancia de las clases
                     Fresco fresco;
                     System.out.println("Has seleccionado introducir un producto fresco.");
@@ -41,13 +42,13 @@ public class ProductoAlimentariaMain {
                     fresco = new Fresco(nombre, numeroDeLote, fechaEnvasado, LocalDate.now(), paisDeOrigen);
                     listadoProductoFresco.add(fresco);
                     System.out.println(fresco);
-                }
-                case 2 -> {
+                break;
+                case 2 :
                     System.out.println("Listado de productos frescos.");
                     System.out.println("---".repeat(10));
                     listadoDeProductos(listadoProductoFresco);
-                }
-                case 3 -> {
+               break;
+                case 3 :
                     //Declarar variables locales e instancia de la clase
                     int temperaturaRecomendada = 0;
                     int codigoOrganismo = 0;
@@ -74,13 +75,13 @@ public class ProductoAlimentariaMain {
                             codigoOrganismo, temperaturaRecomendada);
                     listadoProductoRefrigelado.add(refrigerado);
                     System.out.println(refrigerado);
-                }
-                case 4 -> {
+               break;
+                case 4 : 
                     System.out.println("Listado de productos refrigerado.");
                     System.out.println("---".repeat(10));
                     listadoDeProductos(listadoProductoRefrigelado);
-                }
-                case 5 -> {
+               break;
+                case 5 :
                     // Definir instancia de las clases
                     CongeladoAire congeladoAire;
                     //Listado de información
@@ -106,13 +107,13 @@ public class ProductoAlimentariaMain {
                     congeladoAire = new CongeladoAire(nombre, numeroDeLote, fechaDeCaducidad, fechaEnvasado, paisDeOrigen,
                             porcentajeCongeladoAire);
                     listadoProductoCongeladoAire.add(congeladoAire);
-                }
-                case 6 -> {
+                break;
+                case 6 :
                     System.out.println("Listado de productos congerados por aire.");
                     System.out.println("---".repeat(10));
                     listadoDeProductos(listadoProductoCongeladoAire);
-                }
-                case 7 -> {
+                break;
+                case 7 :
                     // Definir instancia de las clases
                     CongeladoAgua congeladoAgua;
                     //Variable local
@@ -129,13 +130,13 @@ public class ProductoAlimentariaMain {
                     congeladoAgua = new CongeladoAgua(nombre, numeroDeLote, fechaDeCaducidad, fechaEnvasado, paisDeOrigen,
                             salinidad);
                     listadoProductoCongeladoAgua.add(congeladoAgua);
-                }
-                case 8 -> {
+             break;
+                case 8 :
                     System.out.println("Listado de productos congerados por agua.");
                     System.out.println("---".repeat(10));
                     listadoDeProductos(listadoProductoCongeladoAgua);
-                }
-                case 9 -> {
+                break;
+                case 9 :
                     // Definir instancia de las clases
                     CongeladoNitro congeladoNitro;
                     //Variable local
@@ -157,25 +158,27 @@ public class ProductoAlimentariaMain {
                     congeladoNitro = new CongeladoNitro(nombre, numeroDeLote, fechaDeCaducidad, fechaEnvasado, paisDeOrigen,
                             metodoCongelacionEmpleado, tiempoExposicion);
                     listadoProductoCongeladoNitro.add(congeladoNitro);
-                }
-                case 10 -> {
+                break;
+                case 10 :
                     System.out.println("Listado de productos congerados por nitro.");
                     System.out.println("---".repeat(10));
                     listadoDeProductos(listadoProductoCongeladoNitro);
-                }
-                case 11 -> System.out.println("Fin del programa.");
-                default -> System.out.println("Opcion invalido.");
+                break;
+                case 11 : System.out.println("Fin del programa.");
+                break;
+                default : System.out.println("Opcion invalido.");
+                break;
             }
         } while (opcion != 11);
     }
 
-
-    private static void Menu() {
+    private static void Menu(String nombreEmpresa) {
 
         int longitudCadena = (42 - nombreEmpresa.length()) / 2;
         System.out.println("==============================================");
         System.out.print("||" + "*".repeat(longitudCadena) + nombreEmpresa);
-        System.out.println((nombreEmpresa.length() % 2 != 0 ? "*".repeat(longitudCadena + 1) : "*".repeat(longitudCadena)) + "||");
+        System.out.println(
+                (nombreEmpresa.length() % 2 != 0 ? "*".repeat(longitudCadena + 1) : "*".repeat(longitudCadena)) + "||");
         System.out.println("==============================================");
         System.out.println("||*******************Menu*******************||");
         System.out.println("||1.Ingresar productos frescos.             ||");
@@ -193,7 +196,7 @@ public class ProductoAlimentariaMain {
         System.out.println("==============================================");
     }
 
-    //Metodo para visualizar diferente tipo de ArrayList usando generic
+    // Metodo para visualizar diferente tipo de ArrayList usando generic
     private static <T> void listadoDeProductos(ArrayList<T> producto) {
         int i = 1;
         for (T productoFresco : producto) {

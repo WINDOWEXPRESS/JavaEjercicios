@@ -51,6 +51,7 @@ public class Main {
         } catch (IllegalStateException e) {
             System.out.println("Scanner cerrado");
         }
+        dato.close();
         System.out.println(trabajador1.toString());
     }
 }

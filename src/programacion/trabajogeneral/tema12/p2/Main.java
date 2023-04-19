@@ -52,7 +52,7 @@ public class Main {
         vector.addAll(listadoEmpleado);
         System.out.println("Lista en un vector");
         verListado(vector);
-
+        dato.close();
 
     }
     public static void buscarElemento(boolean estado,ArrayList<Empleado> list,String nombre) {

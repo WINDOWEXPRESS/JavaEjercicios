@@ -1,4 +1,5 @@
-import java.io.*;
+package tiempo;
+
 import java.lang.Thread;
 public class hora {
 	public static void main(String[] args){

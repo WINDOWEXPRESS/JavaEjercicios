@@ -45,8 +45,8 @@ public class MainPizzeria {
 				break;
 			case 2:
 				System.out.println("Añadir Cliente:");
-				if (/*pizzeria.addCliente()*/1+1>2) {
-					String nombreCliente; 
+				//if (/*pizzeria.addCliente()*/1+1>2) {
+				/*	String nombreCliente; 
 					String apellidosCliente;
 					String direccionCliente;
 					String telefonoCliente;
@@ -64,16 +64,16 @@ public class MainPizzeria {
 					//A�adir cliente 
 					pizzeria.addCliente(nombreCliente, apellidosCliente, direccionCliente, telefonoCliente);
 					System.out.println("        OK: Cliente añadido correctamente.");
-				}else {
+				}else {*/
 					System.out.println("Error: Ya se ha alcanzado el maximo numero de clientes (" + pizzeria.getMaxClientes() + "), no se pueden añadir mas.");
-				}
+				//}
 				break;
 			case 3:
 				//Crear variables locales
 				int nCliente = 0 ;
 				int tamanioPizza = 0;
 				int tipoPizza = 0;
-				System.out.println("A�adir pedido:");
+				System.out.println("Añadir pedido:");
 				if(pizzeria.getNumClientes()<1) {
 					System.out.println(     "Error: No hay ningun cliente registrado. Necesitas añadir un cliente antes de poder crear un pedido.");
 					break;
@@ -90,7 +90,7 @@ public class MainPizzeria {
 					System.out.print("Introduce el tamaño de la pizza usando el numero (1=Mediana, 2=Familiar): ");
 					tamanioPizza= dato.nextInt();
 				}
-				System.out.println("Seleccionado el n�mero "+tamanioPizza+" para el tamaño de la pizza");
+				System.out.println("Seleccionado el numero "+tamanioPizza+" para el tamaño de la pizza");
 				while(tipoPizza<1|| tipoPizza>3) {
 					System.out.println("Introduce el tipo de pizza usando el numero (1=margarita, 2=cuatro quesos o 3=funghi):");
 					tipoPizza = dato.nextInt();
@@ -102,14 +102,15 @@ public class MainPizzeria {
 			default:
 				break;
 			}
+			dato.close();
 		}
 
 	}
 
 	private static void menu() {
-		System.out.println("==> Men� pizzer�a:");
-		System.out.println("1->Imprimir detalles pizzer�a" );
-		System.out.println("2->A�adir cliente");
+		System.out.println("==> Menu pizzeria:");
+		System.out.println("1->Imprimir detalles pizzeria" );
+		System.out.println("2->Añadir cliente");
 		System.out.println("3->Crear pedido" );
 		System.out.println("4->Servir pedido");
 		System.out.println("5->Salir");

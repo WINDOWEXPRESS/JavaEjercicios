@@ -1,3 +1,5 @@
+package negocios.pizzeria;
+
 public class Pedido {
   private Cliente cliente;
   private Pizza pizza;

@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class PracticaDate {
-    private static GregorianCalendar calendario1;
+    //private static GregorianCalendar calendario1;
 
     public static void main(String[] args) {
         //1.Instanciar un objeto de la clase con el constructor por defecto. Muestra

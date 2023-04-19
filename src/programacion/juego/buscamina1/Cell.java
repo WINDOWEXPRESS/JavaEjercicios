@@ -80,7 +80,7 @@ public class Cell {
         //optionSelected -> OPTIONS
         pedirCoordenada();
         switch (optionSelected) {
-            case 0 -> {
+            case 0 :
                 //Para que el primer paso nunca pise una mina
                 if (firstMove) {
                     mine.generateCellMineSweeper(coordenadaX, coordenadaY);
@@ -93,8 +93,8 @@ public class Cell {
                 } else {
                     cell[coordenadaX][coordenadaY] = mine.getElementCell(coordenadaX, coordenadaY);
                 }
-            }
-            case 1 -> {
+            break;
+            case 1 :
                 if (cell[coordenadaX][coordenadaY].equals(Sign.CASILLA.getSign())) {
                     cell[coordenadaX][coordenadaY] = Sign.BANDERA.getSign();
                 } else if (cell[coordenadaX][coordenadaY].equals(Sign.BANDERA.getSign())) {                              //Aqui para quitar bandera
@@ -104,18 +104,18 @@ public class Cell {
                     JOptionPane.showMessageDialog(null, "Casilla invalida.");
                 }
                 numbFlagWithMine = isFlagOnMine(coordenadaX, coordenadaY) ? numbFlagWithMine-- : numbFlagWithMine++;
-            }
-            case 2 -> {
+            break;
+            case 2 :
                 if (cell[coordenadaX][coordenadaY].equals(Sign.CASILLA.getSign())
                         || cell[coordenadaX][coordenadaY].equals(Sign.BANDERA.getSign())) {
                     cell[coordenadaX][coordenadaY] = Sign.INTERROGACION.getSign();
                 } else {
                     JOptionPane.showMessageDialog(null, "Casilla invalida.");
                 }
-            }
-            default -> {
+            break;
+            default :
                 JOptionPane.showMessageDialog(null, "HOli");
-            }
+            break;
         }
     }
 
@@ -132,6 +132,7 @@ public class Cell {
                 dato.nextLine();
             }
         } while ((coordenadaX < 0 || coordenadaX >= heigth) || (coordenadaY < 0 || coordenadaY >= witdh));
+        dato.close();
     }
 
     public boolean isFlagOnMine(int coordenadaX, int coordenadaY) {

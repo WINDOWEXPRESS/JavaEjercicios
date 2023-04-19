@@ -92,6 +92,7 @@ public class ValoresBuscamina {
 			// Metodo de verificar si hay mina en el posiscion dado.
 			verificarPosicionBomba();
 		} 
+		dato.close();
 	}
 
 	// Metodo de verificar si hay mina en el posiscion dado.

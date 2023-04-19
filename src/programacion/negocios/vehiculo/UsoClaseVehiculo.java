@@ -1,3 +1,5 @@
+package negocios.vehiculo;
+
 import java.util.Scanner;
 
 public class UsoClaseVehiculo {
@@ -31,6 +33,7 @@ public class UsoClaseVehiculo {
 		double litros;
 		System.out.print("Para que distancia quiere hacer el cálculo");
 		distancia=in.nextInt();
+		in.close();
 		
 				
 		litros=monovolumen.combustibleNecesario(distancia);

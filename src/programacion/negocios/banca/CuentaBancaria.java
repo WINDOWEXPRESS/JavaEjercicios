@@ -1,10 +1,12 @@
+package negocios.banca;
+
 import javax.swing.JOptionPane;
 
 public class CuentaBancaria {
 	private String num_Cuenta ;
 	private String titular ;
 	private float saldo ;
-	private float moneda ;
+	//private float moneda ;
 /*
 	public CuentaBancaria(String num_Cuenta,String titular,int saldo){
 		this.num_Cuenta = num_Cuenta;
@@ -25,7 +27,7 @@ public class CuentaBancaria {
 		return saldo;
 	}
 	public String toString() {
-		return "Número de cuenta :"+num_Cuenta +"\rTitular :"+titular+"\rSaldo :"+saldo;
+		return "Nï¿½mero de cuenta :"+num_Cuenta +"\rTitular :"+titular+"\rSaldo :"+saldo;
 	}
 	public void retirada(float moneda) {
 		if(moneda<=saldo)

@@ -1,3 +1,5 @@
+package negocios.banca;
+
 public class Ej_230125_CuentaBancaria {
 	public static void main(String[] args) {
 		//CuentaBancaria cuentaNomina = new CuentaBancaria("12345678910987654321","Carlos",1500);

@@ -21,13 +21,16 @@ public class MainBuscamina {
                 if (mineSweeper <= height * width / 2) {
                     cell = new Cell(height, width, mineSweeper);
                 } else {
-                    JOptionPane.showMessageDialog(null, "ERROR!!! \nBombas:1 a 1/3 de cuadrados.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "ERROR!!! \nBombas:1 a 1/3 de cuadrados.", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Argumento introducido no numerico.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Argumento introducido no numerico.", "Error",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
             if (args.length != 0) {
-                JOptionPane.showMessageDialog(null, "Datos introducido insuficiente.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Datos introducido insuficiente.", "Error",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
             Menu();
@@ -40,17 +43,25 @@ public class MainBuscamina {
                     dato.nextLine();
                 }
             } while (opcion < 1 || opcion > 4);
-            //dato.close();            //No se porque si lo cierro deja de funcionar restos de Scanner de otras clases
+            // dato.close(); //No se porque si lo cierro deja de funcionar restos de Scanner
+            // de otras clases
             switch (opcion) {
-                case 1 -> cell = new Cell(8, 8, 10);
-                case 2 -> cell = new Cell(16, 16, 40);
-                case 3 -> cell = new Cell(16, 30, 99);
-                case 4 -> {
-                    personalizado();
-                    cell = new Cell(height, width, mineSweeper);
-                }
-                default ->
-                        JOptionPane.showMessageDialog(null, "Opcion invalido.", "Error", JOptionPane.INFORMATION_MESSAGE);
+            case 1:
+                cell = new Cell(8, 8, 10);
+                break;
+            case 2:
+                cell = new Cell(16, 16, 40);
+                break;
+            case 3:
+                cell = new Cell(16, 30, 99);
+                break;
+            case 4:
+                personalizado();
+                cell = new Cell(height, width, mineSweeper);
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Opcion invalido.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                break;
             }
         }
         do {
@@ -60,7 +71,7 @@ public class MainBuscamina {
         cell.showCell();
     }
 
-     public static void Menu() {
+    public static void Menu() {
         System.out.println("==============================================");
         System.out.println("||****************BUSCAMINA*****************||");
         System.out.println("==============================================");
@@ -81,12 +92,9 @@ public class MainBuscamina {
             System.out.print("Introducir numero de mina:");
             mineSweeper = dato.nextInt();
             if (mineSweeper >= height * width / 2 || (height < 4 && width < 4)) {
-                JOptionPane.showMessageDialog(null, ("""
-                                Dimensiones invalidas:
-                                ->Altura del juego: de 8 a 24
-                                ->Ancho del juego: de 8 a 32
-                                ->Bombas:1 a 1/3 de cuadrados."""),
-                        "Buscamina", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, ("Dimensiones invalidas: \n:Altura del juego: de 8 a 24"
+                                                    +":Ancho del juego: de 8 a 32 \n:Bombas:1 a 1/3 de cuadrados.")
+                                                    , "Buscamina", JOptionPane.INFORMATION_MESSAGE);
             }
         } while (mineSweeper >= height * width / 2 || (height < 8 && width < 8));
     }

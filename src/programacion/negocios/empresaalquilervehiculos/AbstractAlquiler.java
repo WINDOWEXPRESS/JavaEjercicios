@@ -1,7 +1,6 @@
 package negocios.empresaalquilervehiculos;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 abstract class AbstractAlquiler {
   AbstractCliente cliente;

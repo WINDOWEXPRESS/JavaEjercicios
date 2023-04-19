@@ -1,3 +1,5 @@
+package negocios.pizzeria;
+
 public class Pizza {
   private String tamanio;
   private String tipo;

@@ -107,6 +107,7 @@ public class GestorCorreo {
                     }
             }
         } while (opcion != 7);
+        dato.close();
     }
 
     static int obtenerPosicionCorreo() {
@@ -120,17 +121,13 @@ public class GestorCorreo {
                 System.out.println("Tipo de dato incorrecto.");
             }
         } while (posicionCorreo < 0 || posicionCorreo >= listadoCorreo.size());
+        dato.close();
         return posicionCorreo;
     }
 
     static void menu() {
-        System.out.println("""
-                1. Bandeja de entrada.
-                2. Añadir Correo.
-                3. Eliminar un correo.
-                4. Mostrar un correo.
-                5. Mostrar todos los correos.
-                6. Mostrar correos a partir de su origen .
-                7. Salir.""");
+        System.out.println("1. Bandeja de entrada.\n2. Añadir Correo.\n3. Eliminar un correo."
+                            +"4. Mostrar un correo.\n5. Mostrar todos los correos.\n"
+                            +"6. Mostrar correos a partir de su origen.\n7. Salir.");
     }
 }

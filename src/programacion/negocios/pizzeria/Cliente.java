@@ -1,3 +1,5 @@
+package negocios.pizzeria;
+
 
 public class Cliente {
   private String nombre;
